@@ -50,7 +50,7 @@ public class TextureGetter implements Paths {
 				
 				if(f.getName().endsWith(".mcmeta")) isMeta = true;
 				
-				if(str2.endsWith("assets/minecraft/textures/block/") 
+				if(str2.endsWith("assets/minecraft/textures/block/")
 				|| str2.contains("assets/minecraft/textures/entity/")) {
 					
 					
@@ -331,7 +331,7 @@ public class TextureGetter implements Paths {
 			String doResize = "";
 			if(isBlock) doResize = " -rwidth "+resizeHeight+" -rheight "+resizeWidth;
 			String batContent = ""
-					+ "VTFEdit\\bin\\x64\\vtfcmd.exe"
+					+ "src\\VTFEdit\\bin\\x64\\vtfcmd.exe"
 					+ " -folder "+q+inputFolder +q
 					+ " -output "+q+outputFolder+q
 					+ doResize
@@ -360,7 +360,7 @@ public class TextureGetter implements Paths {
 	    		   UserDir + "\\" + "convert"+(i+1)+".bat"
 	        	};*/
 
-		   String[] args = {
+		   /*String[] args = {
 				   "cmd.exe",
 				   "/C",
 				   "Start",
@@ -373,12 +373,24 @@ public class TextureGetter implements Paths {
 		   //int returned = 0;
 		   //System.out.println("returned: "+returned);
 		   //System.out.println(outputFolder);
-		   if(i == 0) System.out.println("first stage done, incrementing...");
+		   if(i == 0) System.out.println("first stage done, incrementing...");*/
 
-		   if(returned >= 0) {
-			   if(returned > 0) {
+			// execute bat file
+			int code = 1;
+			try {
+				ProcessBuilder pb = new ProcessBuilder("cmd.exe", "/c", "start", "convert"+(i+1)+".bat");
+				pb.directory(new File(UserDir));
+				Process process = pb.start();
+				code = process.waitFor();
+				System.out.println("Waiting for process...");
+			} catch (IOException | InterruptedException e) {
+				e.printStackTrace();
+			}
+
+		   if(code >= 0) {
+			   if(code > 0) {
 				   //something didnt go right
-				   System.out.println("Process returned "+ returned + " for subFolder: "+ modelMatPath);
+				   System.out.println("Process returned "+ code + " for subFolder: "+ modelMatPath);
 			   } // else here to stop the program ...
 				i++;
 

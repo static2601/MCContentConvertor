@@ -1,15 +1,10 @@
 package MCContentConvertor;
 
-//import materialsCreatorNew.MainControlPanel;
-//import materialsCreatorNew.TextureGetter;
-//import materialsCreatorNew.getJsonData;
-import MCContentConvertor.GUIStart;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import static MCContentConvertor.GUIStart.tfDirPath;
 import static MCContentConvertor.GUIStart.mdlScale;
@@ -17,7 +12,6 @@ import static MCContentConvertor.GUIStart.mdlScale;
 public class makeQC implements Paths {
 
     private final ArrayList<getJsonData.perSkinProperties> perSkinProperties2;
-    //public double scale = mdlScale;
     public String SMDsPath = "SMDs/";
     public String modelPath = "props/minecraft_original/";
     public String materialsPath = "minecraft_prop_materials/";
@@ -40,7 +34,6 @@ public class makeQC implements Paths {
     public String animatedTextureFrameRate;
     public String[] vtfLocation;
 
-    //public String matDir = "minecraft_original";
     public getJsonData data = new getJsonData();
 
     public ArrayList<String[]> skinAProperties;
@@ -70,7 +63,6 @@ public class makeQC implements Paths {
         this.surfaceProp = data.getModelSurfaceProp(index);
         this.collisionModel = data.collisionModel;
         this.collisionOptions = data.getCollisionOptions(index);
-        //this.skinsA = data.getModelSkinsA(index);
         this.UVMap = data.getModelUVMap(index);
 
         this.nocull = data.nocull;
