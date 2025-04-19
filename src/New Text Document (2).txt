@@ -1,0 +1,49 @@
+models not running bat either...
+game folder needs to be correct, if you need to do a temp folder, add an option and goto root/temp.
+You must also have the program FAIL if something fatal happens like this, else very hard to figure out 
+it happened.
+
+for materials, had to take out vtfLocation:[
+chest1 path
+chest2 path
+chest3 path
+
+made them all: "path"
+
+worked to stop repeating material path in unique
+will need to look at why this happened and come up with a solution.
+
+also, look into moving everything into textures and rename to temp so we can 
+gitignore it and delete it everytime we refresh the textures
+also move qcs in there with smds in the main directory, not git ignored
+
+studiomdl wil need to be carried with the project and placed in team fortress 2/bin or whichever gmae dir
+it needs to go if its nto in there already.
+
+textures still not compiling, figure out why. and clean up the code there also.
+and it seems I was trying to make a temp folder for vtfs then move but, if we delete the main folder, 
+shouldnt have to do that.
+
+back up everything and delete all the garbage from the scripts.
+
+scale does set properly now so just get those bat file running and all is good there.
+
+on compiling models, alot of stupid errors:
+Error opening D:\SteamLibrary\steamapps\common\Team Fortress 2\tf\models/props/minecraft_original/RedstoneSwitch.vvd! (Check for write enable)
+check QC, nothing abnormal in paths
+then,
+D:\Coding Projects\ProjectFiles\IdeaProjects\MaterialCreator\QCs>c
+'c' is not recognized as an internal or external command,
+operable program or batch file.
+
+models were missing, invisible in the map. something in the past, this happens, now i remember, compiler had to be run multiple times to get everything compiled.
+more vvd errors
+
+was this name cutoff?
+D:\Coding Projects\ProjectFiles\IdeaProjects\MaterialCreator\QCs>s_3.qc
+'s_3.qc' is not recognized as an internal or external command,
+operable program or batch file.
+
+D:\Coding Projects\ProjectFiles\IdeaProjects\MaterialCreator\QCs>
+
+scales are still 0.0...
