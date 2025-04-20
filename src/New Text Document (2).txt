@@ -47,3 +47,44 @@ operable program or batch file.
 D:\Coding Projects\ProjectFiles\IdeaProjects\MaterialCreator\QCs>
 
 scales are still 0.0...
+
+in modeldata.json:
+to remove animations from texture of lantern, removed lines:
+    "animatedTextureVar" : "basetexture",
+    "animatedTextureFrameNumVar" : "frame",
+    "animatedTextureFrameRate" : "3"
+from both hanging and standard. doing this didnt fix it.
+
+template for modeldata.json:
+{
+    "modelname": "Template",
+    "type": "staticprop",
+    "body": "Template",
+    "cdmaterials": "",
+    "sequence": [{
+      "idle": "Template"
+    }],
+    "surfaceprop": "metal",
+    "collisionmodel": "_collision",
+    "collisionOptions" : [
+      "$automass",
+      "$concave"
+    ],
+    "textureGroup": [{
+      "skinsA": [
+        ""
+      ],
+      "skinsB": [
+        ""
+      ]
+    }],
+    "UVMap" : "",
+    "makeUVMap" : [{
+      "row1" : [
+        ""
+      ],
+      "row2" : [
+        ""
+      ]
+    }]
+  }

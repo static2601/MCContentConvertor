@@ -105,17 +105,17 @@ public class QCFunctions implements Paths {
 			String str1 = p.get(i);
 			//look for same string in array
 			for(int a=0; a<p.size(); a++) {
-				System.out.println("check if: "+ str1 + ":str1.equals("+p.get(a)+")");
+				//System.out.println("check if: "+ str1 + ":str1.equals("+p.get(a)+")");
 				if(str1.equals(p.get(a))) {
 					//remove all copies, replace with one
-					System.out.println("removing: s = "+ a + ", " + p.get(a));
+					//System.out.println("removing: s = "+ a + ", " + p.get(a));
 					p.remove(a);
 					a--;
 				}
 			} 
 			p.add(str1);
 		}
-		System.out.println("p: "+p);
+		//System.out.println("p: "+p);
 		return p;
 	}
 }

@@ -16,7 +16,7 @@ import java.util.jar.JarFile;
 public class TextureGetter implements Paths {
 
 	static QCFunctions qc = new QCFunctions();
-	private static int fileCount = 0;
+	//private static int fileCount = 0;
 	public static ArrayList<String> animatedVTFs = new ArrayList<String>();
 
 	/**
@@ -35,7 +35,7 @@ public class TextureGetter implements Paths {
 		JarFile jar = new JarFile(jarFile);
 		Enumeration<JarEntry> enumEntries = jar.entries();
 		while (enumEntries.hasMoreElements()) {
-		    JarEntry file = (JarEntry) enumEntries.nextElement();
+		    JarEntry file = enumEntries.nextElement();
 		   
 			File f = new File(destDir + File.separator + file.getName());
 			
@@ -58,9 +58,7 @@ public class TextureGetter implements Paths {
 						f.getParentFile().mkdirs();
 					
 					if(str2.endsWith("assets/minecraft/textures/block/")){
-						
-						//fileCount++;
-						
+
 						//set variable to indicate true to run this function AFTER extraction
 						splitTexture = true;
 					}
@@ -77,28 +75,7 @@ public class TextureGetter implements Paths {
 						fos.close();
 						is.close();
 					}
-				    else {
-						//System.out.println("meta: " + file.getName());
-				    	//read meta data into array
-				    	/////String json = new Gson().toJson(fos);
-				    	//////System.out.println(json+"GSON json file");
-						//ArrayList<String> aLines = new ArrayList<String>();
-						//BufferedReader br = new BufferedReader(new FileReader(f));
-						
-						//String line = "";
-						//while((line += br.readLine()) != null) {
-							//aLines.add(line);
-							//System.out.println(line);
-						//}
-						//br.close();
-						//System.out.println(line+"<----");
-						
-						//parse line into json object
-				    }
-				    
 				    if(splitTexture && !isMeta) splitTextures(f);
-				    //fos.close();
-				    //is.close();
 				}
 			}
 		}
@@ -203,7 +180,7 @@ public class TextureGetter implements Paths {
 
 		System.out.println(dash+"Checking Models for Texture Paths..."+dash);
 
-		/** folder path for current model material path retreived from
+		/* folder path for current model material path retrieved from
 		 * getUniquePaths function, switched on array*/
 		String modelMatPath = "";
 		List<String> arr = qc.getDirUniquePaths(false);
@@ -215,7 +192,7 @@ public class TextureGetter implements Paths {
 
 		System.out.println(dash+"Making VTFs..."+dash);
 
-		ArrayList<String> tempFolders = new ArrayList<>();
+		//ArrayList<String> tempFolders = new ArrayList<>();
 
 		// for each unique model material path...
 		for(int i=0; i<arr.size();) {
@@ -240,20 +217,22 @@ public class TextureGetter implements Paths {
 
 
 			String inputFolder = PngsMaterialsDir + prefix + modelMatPath +"*.png";
-			String f = inputFolder.replace("*.png", "");
+			//String f = inputFolder.replace("*.png", "");
 
 			boolean isBlock = false;
 			if(modelMatPath.equals("\\block")) {
 				isBlock = true;
 				inputFolder = PngsMaterialsDir + prefix + modelMatPath +"\\*.png";
-				f = inputFolder.replace("\\*.png", "");
+				//f = inputFolder.replace("\\*.png", "");
 			}
 
-			File file = new File(f);
+			//File file = new File(f);
 			// dont need to recheck our files of temp folders
 			// !animation textures not converting because its runs through this
 			// and is ...
+			/*
 			if(!convertingTemp && 1 == 2) {
+				System.out.println("convertingTemp is false, does this need to run??<-----------------------------------------------------------------------------");
 				// scan all files for dimensions other than 16x16
 				// put references to all in array
 				// reprocess later one at a time with a custom dimension
@@ -289,7 +268,7 @@ public class TextureGetter implements Paths {
 							String path = ffDest.toString().split("textures")[ffDest.toString().split("textures").length-1];
 							String path2 = path.replace(ffDest.getName(), "").replace("\\", "/");
 							System.out.println("path2: "+path2);
-							tempFolders.add(path2);
+							//tempFolders.add(path2);
 
 //						JSONObject jobj = new JSONObject();
 //						jobj.put("file", ff);
@@ -299,20 +278,17 @@ public class TextureGetter implements Paths {
 						}
 					}
 				}
-			}
+			}*/
 
+			// modelMatPath2 is a copy of modelMAtPath, if our run is on /block,
+			// then modelMatPath2 equals "", below statement wont run
 			if(modelMatPath2.endsWith("/")) {
 				int  lastSlash = modelMatPath2.lastIndexOf("/");
 				modelMatPath2 = modelMatPath2.substring(0, lastSlash);
-				System.out.println("subFolder2: "+ modelMatPath2);
+				System.out.println("modelMatPath2: "+ modelMatPath2);
 			}
 			String outputFolder = VTFsMatDir + modelMatPath2;
-			if(convertingTemp) {
-				// change output folder to use the files original path instead
-				// so signs would be /entity/signs/hanging/
-				// instead of /entity/temp32x16/
 
-			}
 			String fileName = "convert"+ (i+1) +".bat";
 			String q = "\"";
 			
@@ -349,110 +325,48 @@ public class TextureGetter implements Paths {
 			//Create bat file
 			writer.write(batContent); 
 			writer.close();
-			//System.out.println(UserDir + "\\" + fileName);
-
-
-			
-			// Execute command
-	       /*String[] args = {
-	    		   "cmd.exe", "/C", "Start /B",
-	    		  //"cmd.exe", "/c /B", "Start",
-	    		   UserDir + "\\" + "convert"+(i+1)+".bat"
-	        	};*/
-
-		   /*String[] args = {
-				   "cmd.exe",
-				   "/C",
-				   "Start",
-				   "/B",
-				   UserDir + "\\" + "convert"+(i+1)+".bat"
-		   };
-		   System.out.println(Arrays.toString(args));
-		   Process p = Runtime.getRuntime().exec(args);
-		   int returned = p.waitFor();
-		   //int returned = 0;
-		   //System.out.println("returned: "+returned);
-		   //System.out.println(outputFolder);
-		   if(i == 0) System.out.println("first stage done, incrementing...");*/
 
 			// execute bat file
-			int code = 1;
+
+			// Execute command
+			String[] args = {"cmd.exe", "/C", "Start", "convert"+(i+1)+".bat"};
+			int code = BatchRunner.runBat(args, UserDir);
+
+			/*int code = 1;
 			try {
 				ProcessBuilder pb = new ProcessBuilder("cmd.exe", "/c", "start", "convert"+(i+1)+".bat");
 				pb.directory(new File(UserDir));
 				Process process = pb.start();
 				code = process.waitFor();
 				System.out.println("Waiting for process...");
-			} catch (IOException | InterruptedException e) {
+			}
+			catch (IOException | InterruptedException e) {
 				e.printStackTrace();
-			}
+			}*/
 
-		   if(code >= 0) {
-			   if(code > 0) {
-				   //something didnt go right
-				   System.out.println("Process returned "+ code + " for subFolder: "+ modelMatPath);
-			   } // else here to stop the program ...
-				i++;
+		    if(code >= 0) {
+				if(code > 0) {
+			 	    //something didnt go right
+			 	    System.out.println("Process returned "+ code + " for subFolder: "+ modelMatPath);
+					// else here to stop the program ...
+					System.exit(0);
+			    }
 
-				//if array is on block, subfolder2 will equal "".
-				//check if all files are there before running next bat
-				if(modelMatPath2.isEmpty()) {
-					//TODO make temp folder to put files in to get proper count number, then move to folder
-					int fiCount = PNGFolderInput.listFiles().length;
-					//check if all files extracted were made into VTFs, then continue
-					//DOES NOT RUN IF OLD FILE STILL IN FOLDER!	Delete folder before starting or something
-					System.out.println("Converting VTFs 0 / "+fiCount);
-					while(folderOutput.listFiles().length < fiCount-1) {
-						//System.out.println(folderOutput.listFiles().length+" <--length|fileCount--> "+fiCount);
-					}
-					System.out.println("Converting VTFs "+folderOutput.listFiles().length+" / "+fiCount);
+			    i++;
+			    //if array is on block, subfolder2 will equal "".
+			    //check if all files are there before running next bat
+			    if(modelMatPath2.isEmpty()) {
+			 	   int fiCount = PNGFolderInput.listFiles().length;
+			 	   //check if all files extracted were made into VTFs, then continue
+			 	   //DOES NOT RUN IF OLD FILE STILL IN FOLDER!	Delete folder before starting or something
+			 	   System.out.println("Converting VTFs 0 / "+fiCount);
+			 	   while(folderOutput.listFiles().length < fiCount-1) {
+			 		   //System.out.println(folderOutput.listFiles().length+" <--length|fileCount--> "+fiCount);
+			 	   }
+			 	   System.out.println("Converting VTFs "+folderOutput.listFiles().length+" / "+fiCount);
 				}
-		   }
-		   	// if we are at the last element of the array,
-			// add our temp folders to be converted
-			if(i == (arr.size()) && !convertingTemp) {
-
-				//arr.addAll(getUniqueOfList(tempFolders));
-				//arr.forEach(a ->System.out.println("paths of arr: "+ a));
-				// last step
-				// should have toConvertDems populated with every file
-				// need to check for
-				// check for any temp folder in textures folder
-//				File texturesDir = new File(PngsMaterialsDir + prefix);
-//				File[] files = texturesDir.listFiles();
-//				for(int x = 0; x < files.length; x++) {
-//					if(files[x].isDirectory() && files[x].getName().contains("temp")) {
-//						// add subfolder, removing path to it( all before /temp16x32 )
-//
-//						// of the full path, get its folders
-//						System.out.println("files[x]: "+ files[x]);
-//						File newFiles = new File(files[x].toString() + "/");
-//						File[] tempfiles = newFiles.listFiles();
-//						for(File fff : tempfiles) {
-//							System.out.println("tempfile: "+fff);
-//						}
-//
-//                        assert tempfiles != null;
-//                        String tempF = tempfiles[tempfiles.length - 1].toString().replace(tempfiles[tempfiles.length - 1].getName(), "");
-//						System.out.println("tempF: "+tempF);
-//
-//						//String addName = files[x].getAbsolutePath().split(texturesDir.toString())[1];
-//						System.out.println("files[x]: "+ files[x]);
-//						System.out.println("tempfiles[0]: "+ tempfiles[0]);
-//						//String addName = files[x].toString().split("textures")[2] +"/";
-//						// add the full path to the files instead of just temp folder
-//						String tmpf = tempfiles[0].getParent();
-//						//String addName = tempF.split("textures")[2];
-//						System.out.println("tmpf: "+tmpf);
-//						String addName = tmpf.split("textures")[tmpf.split("textures").length-1];
-//						System.out.println("addName: "+ addName);
-//
-//						arr.add(addName);
-//					}
-//				}
-			}
+		   	}
 		}
-		//MakeVMTs();
 		
 		//print to GUI Processing label
 		//GUIStart.set_progress_label("Done!", true);
@@ -460,22 +374,7 @@ public class TextureGetter implements Paths {
 		
 		//MakeAnimVTFs();
 	}
-	public static ArrayList<String> getUniqueOfList(ArrayList<String> p) {
 
-		for(int i = 0; i < p.size(); i++) {
-			String str1 = p.get(i);
-			//look for same string in array
-			for(int a=0; a<p.size(); a++) {
-				if(str1.equals(p.get(a))) {
-					//remove all copies, replace with one
-					p.remove(a);
-					a--;
-				}
-			}
-			p.add(str1);
-		}
-		return p;
-	}
 	public static void MakeAnimVTFs() throws IOException, InterruptedException {
 		
 		//print to GUI Processing label
@@ -500,7 +399,7 @@ public class TextureGetter implements Paths {
 		System.out.println(fi.listFiles().length +", "+ fiCount);
 		
 		String batContent = ""
-				+ "VTFEdit\\bin\\x64\\vtfcmd.exe"
+				+ "src\\VTFEdit\\bin\\x64\\vtfcmd.exe"
 				+ " -folder "+q+inputFolder +q
 				+ " -output "+q+outputFolder+q
 				+ " -rwidth 128 -rheight 128"
@@ -519,36 +418,34 @@ public class TextureGetter implements Paths {
 		writer.write(batContent); 
 		writer.close();
 		System.out.println(UserDir + "/" + fileName);
-		
+
 		// Execute command
-       String[] args = {
-    		   "cmd.exe", "/C", "Start /B",
-    		   UserDir + "\\" + "convertAnim.bat"
-        	};
-       
-       Process p = Runtime.getRuntime().exec(args);
-       int returned = p.waitFor();
-       	
-       if(returned == 0) {
-        	System.out.println(returned);
-        	System.out.println(outputFolder);
-        	
-        	//if directory is already populated with files, this wont work!
-        	//either delete manually, through the script or remove this
-        	//delete generated folder, delete vtfs2 folder before starting, maybe vtfs also
-        	//same for the other while loop in makevtfs()
+       	String[] args = {"cmd.exe", "/C", "Start", "convertAnim.bat"};
+	   	int returned = BatchRunner.runBat(args, UserDir);
+	   	//Process p = Runtime.getRuntime().exec(args);
+	   	//int returned = p.waitFor();
 
-        	while(f.listFiles().length < fiCount) {
+	   if(returned == 0) {
+			System.out.println(returned);
+			System.out.println(outputFolder);
 
-    		}
-        	System.out.println(f.listFiles().length+" - 100% - "+fiCount);
+			//if directory is already populated with files, this wont work!
+			//either delete manually, through the script or remove this
+			//delete generated folder, delete vtfs2 folder before starting, maybe vtfs also
+			//same for the other while loop in makevtfs()
+
+
+			while(f.listFiles().length < fiCount) {
+				System.out.println(f.listFiles().length + " < " + fiCount);
+			}
+			System.out.println(f.listFiles().length+" - 100% - "+fiCount);
 		   System.out.println("Making Animated VTFs...Done!");
-        	//MakeAnimVMTs();
+			//MakeAnimVMTs();
 		   // move animated vtf from vtf2 to vtf folder
 		   // only move vtf of name ending with zero, the first frame
 		   // this will be default until animations are generated (manually for now)
 		   MoveAnimVTF(f);
-       }
+	   }
 	}
 	public static void MoveAnimVTF(File f) throws IOException {
 

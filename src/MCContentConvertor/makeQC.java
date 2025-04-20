@@ -274,7 +274,8 @@ public class makeQC implements Paths {
     protected static boolean PrepareCompiler(String studioMdlPath, String gameFolder, String QCName, String QCPath) {
 
         //path to compiler
-        String fileName = "compiler.bat";
+        //String fileName = "compiler.bat";
+        String fileName = QCName.replace(".qc","")+"_compiler.bat";
         String q = "\"";
         String batContent =
                 q+ studioMdlPath +q
@@ -283,35 +284,23 @@ public class makeQC implements Paths {
                         + " -quiet"
                         + " " + QCName;
 
-        boolean testwriteOnly = false;
-
-        if(!testwriteOnly) {
-            try {
-                //File theDir = new File(path);
-                //if (!theDir.exists()){
-                //	theDir.mkdirs();
-                //}
-                BufferedWriter writer = new BufferedWriter(new FileWriter(QCPath + fileName));
-
-                writer.write(batContent);
-                writer.close();
-                System.out.println("Written Content \n"+ QCPath + fileName +"\n");
-                System.out.println("batContent:\n"+ batContent);
-                return true;
-
-            } catch (IOException e) {
-
-                e.printStackTrace();
-                return false;
-            }
-        } else {
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(QCPath + fileName));
+            writer.write(batContent);
+            writer.close();
             System.out.println("Written Content \n"+ QCPath + fileName +"\n");
             System.out.println("batContent:\n"+ batContent);
             return true;
         }
+        catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+
     }
 
-    public boolean CompileModel(String QCPath, String QCName) throws IOException, InterruptedException {
+    //ArrayList<String> failedCompiles = new ArrayList<>();
+    public int CompileModel(String QCPath, String QCName) throws IOException, InterruptedException {
 
         //will need to use other paths. eg css, garrysmod, etc
         //String gameFolder = "D:/Steam/steamapps/common/Team Fortress 2/tf";
@@ -319,34 +308,55 @@ public class makeQC implements Paths {
         String gameFolder = tfDirPath;
         String binFolder = gameFolder.replace("tf", "bin/");
         String studioMdlPath = binFolder + "studiomdl";
-
+        int code = 1;
         //Create bat file
         if(PrepareCompiler(studioMdlPath, gameFolder, QCName, QCPath)) {
             // execute bat file
-            int code = 1;
+            // Execute bat command
+            String[] args = {"cmd.exe", "/c", "start", QCName.replace(".qc","")+"_compiler.bat"};
+            code = BatchRunner.runBat(args, QCPath);
+
+            //Process process = null;
+            /*int code = 1;
             try {
                 ProcessBuilder pb = new ProcessBuilder("cmd.exe", "/c", "start", "compiler.bat");
                 pb.directory(new File(QCPath));
-                Process process = pb.start();
-                code = process.waitFor();
+                process = pb.start();
+                System.out.println(process.children() + ", pid: " + process.pid());
                 System.out.println("Waiting for process................................................................");
+                code = process.waitFor();
+
+                System.out.println("process returned?................................................................");
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
-            }
+            }*/
             if(code > 0) {
-                System.out.println("ERROR: p/waitFor returned 1");
-                return false;
+                System.out.println("ERROR: p/waitFor returned " + code);
+                //GUIStart.failedCompiles.add(QCPath + QCName);
+                //process.destroy();
                 //System.exit();
             }
             else {
                 System.out.println("finished compiling model: "+ QCPath + QCName);
-                return true;
+                //process.destroy();
             }
+
             //System.out.println();//needs to wait for each to
             //finish before doing the next one
 
-        }// else System.out.println("Compiler failed.");
-        return false;
+        }
+        else {
+            System.out.println("Compiler failed at PrepareCompiler"
+                    + "("
+                    + " studioMdlPath:"+ studioMdlPath
+                    +", gameFolder: "+ gameFolder
+                    +", QCName: "+ QCName
+                    +", QCPath: "+ QCPath
+                    + ")"
+            );
+            System.exit(0);
+        }
+        return code;
     }
     public void WriteVMTFile(String toWrite, String matPath, String skin) throws IOException {
 

@@ -13,6 +13,7 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 
@@ -47,6 +48,7 @@ public class GUIStart implements Paths {
     public static String tfDirPath; // needs to be tf folder for getting studiomdl, could still make it any folder.
                                     // will need to think about other games without the tf folder
     public static double mdlScale;
+
 
     public static void main(String[] args) {
         new GUIStart();
@@ -243,7 +245,7 @@ public class GUIStart implements Paths {
                 // cant yet auto make animated vtfs, need to
                 // import all of same name+numbers and save as vtf
                 // vmt would have animation data in it.
-                //TextureGetter.MakeAnimVMTs();
+                TextureGetter.MakeAnimVMTs();
             }
 
         } catch (IOException e2) {
@@ -327,7 +329,7 @@ public class GUIStart implements Paths {
             System.out.println(dash+"Making QC Files and Compiling Models..."+dash);
 
             set_progress_label("Making QC Files...", false);
-
+            ArrayList<String> failedCompiles = new ArrayList<>();
             for(int i = 0; i < qc.size(); i++) {
                 makeQC qcc = new makeQC(i);
                 System.out.println("\nQC File for index[" + i + "]:");
@@ -347,9 +349,12 @@ public class GUIStart implements Paths {
                 String[] vmts = qcc.makeVMT();
 
                 System.out.println("compiling next mdodel, " + qcPath + mdlName);
-                qcc.CompileModel(qcPath, mdlName + ".qc");
-
+                if (qcc.CompileModel(qcPath, mdlName + ".qc") > 0) {
+                    failedCompiles.add(qcPath + mdlName);
+                }
             }
+            failedCompiles.forEach(c -> System.out.println("Failed Compiles: " + c));
+
             System.out.println("Making QC Files and Compiling Models...Done!");
             set_progress_label("Done!", true);
         }
