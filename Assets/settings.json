@@ -1,0 +1,184 @@
+{
+  "settings": {
+    "extractTextures": true,
+    "compileModels": true,
+    "outputPath": "",
+    "openFolder": false,
+    "useUnits": true,
+    "texturePacks": {},
+    "scale": 1.0,
+    "units": 50,
+    "selectedTexturePack": "minecraft_original",
+    "mcJarPath": "",
+    "gameDir": ""
+  },
+  "textureSettings": [
+    {
+      "customColor": "",
+      "defaultColor": "#319400",
+      "uncolored": "",
+      "textureName": "grass_block_side",
+      "transparent": true
+    },
+    {
+      "customColor": "",
+      "defaultColor": "#003600",
+      "uncolored": "",
+      "textureName": "lily_pad",
+      "transparent": true
+    },
+    {
+      "customColor": "",
+      "defaultColor": "#003600",
+      "uncolored": "",
+      "textureName": "vine",
+      "transparent": true
+    },
+    {
+      "customColor": "",
+      "defaultColor": "#4b4712",
+      "uncolored": "",
+      "textureName": "oak_leaves",
+      "transparent": false
+    },
+    {
+      "customColor": "",
+      "defaultColor": "#4b4712",
+      "uncolored": "",
+      "textureName": "acacia_leaves",
+      "transparent": false
+    },
+    {
+      "customColor": "",
+      "defaultColor": "#4b4712",
+      "uncolored": "",
+      "textureName": "jungle_leaves",
+      "transparent": false
+    },
+    {
+      "customColor": "",
+      "defaultColor": "#223522",
+      "uncolored": "",
+      "textureName": "spruce_leaves",
+      "transparent": false
+    },
+    {
+      "customColor": "",
+      "defaultColor": "#4b4712",
+      "uncolored": "",
+      "textureName": "dark_oak_leaves",
+      "transparent": false
+    },
+    {
+      "customColor": "",
+      "defaultColor": "#364724",
+      "uncolored": "",
+      "textureName": "birch_leaves",
+      "transparent": false
+    },
+    {
+      "customColor": "",
+      "defaultColor": "#319400",
+      "uncolored": "",
+      "textureName": "grass_block_top",
+      "transparent": true
+    },
+    {
+      "customColor": "",
+      "defaultColor": "#003600",
+      "uncolored": "",
+      "textureName": "short_grass",
+      "transparent": true
+    },
+    {
+      "customColor": "",
+      "defaultColor": "#003600",
+      "uncolored": "",
+      "textureName": "tall_grass_bottom",
+      "transparent": true
+    },
+    {
+      "customColor": "",
+      "defaultColor": "#003600",
+      "uncolored": "",
+      "textureName": "tall_grass_top",
+      "transparent": true
+    },
+    {
+      "customColor": "",
+      "defaultColor": "#494411",
+      "uncolored": "",
+      "textureName": "mangrove_leaves",
+      "transparent": false
+    },
+    {
+      "customColor": "",
+      "defaultColor": "#003600",
+      "uncolored": "",
+      "textureName": "large_fern_bottom",
+      "transparent": true
+    },
+    {
+      "customColor": "",
+      "defaultColor": "#003600",
+      "uncolored": "",
+      "textureName": "large_fern_top",
+      "transparent": true
+    },
+    {
+      "customColor": "",
+      "defaultColor": "#003600",
+      "uncolored": "",
+      "textureName": "fern",
+      "transparent": true
+    },
+    {
+      "customColor": "",
+      "defaultColor": "",
+      "uncolored": "",
+      "textureName": "azalea_leaves",
+      "transparent": false
+    },
+    {
+      "customColor": "",
+      "defaultColor": "",
+      "uncolored": "",
+      "textureName": "flowering_azalea_leaves",
+      "transparent": false
+    },
+    {
+      "customColor": "",
+      "defaultColor": "",
+      "uncolored": "",
+      "textureName": "cherry_leaves",
+      "transparent": false
+    },
+    {
+      "customColor": "",
+      "defaultColor": "",
+      "uncolored": "",
+      "textureName": "pale_oak_leaves",
+      "transparent": false
+    },
+    {
+      "customColor": "",
+      "defaultColor": "#3A44CC",
+      "uncolored": "",
+      "textureName": "water_still",
+      "transparent": true
+    },
+    {
+      "customColor": "",
+      "defaultColor": "#3A44CC",
+      "uncolored": "",
+      "textureName": "water_flow",
+      "transparent": true
+    }
+  ],
+  "modelSettings": [
+    {
+      "modelName": "",
+      "settings": ""
+    }
+  ]
+}

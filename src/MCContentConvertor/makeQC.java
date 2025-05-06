@@ -6,15 +6,17 @@ import org.json.simple.parser.ParseException;
 import java.io.*;
 import java.util.ArrayList;
 
-import static MCContentConvertor.GUIStart.tfDirPath;
-import static MCContentConvertor.GUIStart.mdlScale;
+import static MCContentConvertor.GUIStart.*;
+import static MCContentConvertor.Pathnames.DEBUG;
 
-public class makeQC implements Paths {
+public class makeQC {
 
     private final ArrayList<getJsonData.perSkinProperties> perSkinProperties2;
-    public String SMDsPath = "SMDs/";
-    public String modelPath = "props/minecraft_original/";
-    public String materialsPath = "minecraft_prop_materials/";
+    private String SMDsPath = "SMDs/";
+    private final String modelPath = modelsDir + "_"+ mdlUnits +"/";
+    private final String VTFSMATDIR = GAMEDIR + "/materials/"+ TEXTUREPACK +"/";
+
+    public String materialsPath = TEXTUREPACK + "/minecraft_prop_materials/";
     public String modelName;
     public String type;
     public String body;
@@ -29,6 +31,7 @@ public class makeQC implements Paths {
     public String alphatest;
     public String color;
     public String surfaceprop;
+    public String selfillum;
     public String animatedTextureVar;
     public String animatedTextureFrameNumVar;
     public String animatedTextureFrameRate;
@@ -41,16 +44,6 @@ public class makeQC implements Paths {
     public String[] skinsA;
     public String[] skinsB;
     public StringBuilder sb = new StringBuilder();
-
-    // later will need to make vmt files for the models
-    // will need functions to get the vtfs and copy them to
-    // model directory with vmt files
-    // vmt properties will be gotten from here
-
-    // keep in mind, will have to make custom uv maps
-    // from textures added map
-    // should we specify how to construct uvmap in json?
-    // would need images(pngs) 2 rows, 2 columns?
 
     public makeQC(int index) throws IOException, ParseException {
         getJsonData data = new getJsonData(index);
@@ -69,6 +62,7 @@ public class makeQC implements Paths {
         this.alphatest = data.alphatest;
         this.color = data.color;
         this.surfaceprop = data.surfaceprop;
+        this.selfillum = data.selfillum;
         this.animatedTextureVar = data.animatedTextureVar;
         this.animatedTextureFrameNumVar = data.animatedTextureFrameNumVar;
         this.animatedTextureFrameRate = data.animatedTextureFrameRate;
@@ -80,6 +74,7 @@ public class makeQC implements Paths {
         this.skinsB = data.getModelSkinsB(index);
 
     }
+
     public StringBuilder makeQCFile() {
         if(this.modelName.equals("Template"))
             return new StringBuilder();
@@ -111,9 +106,7 @@ public class makeQC implements Paths {
                     System.out.println("skinsB.length: "+ this.skinsB.length);
                     System.out.println("skinB: "+ skinB+ ", i: "+ i);
                 }
-
-                    //if(skinsB[i] != null) skinB = "\" \""+ skinsB[i];
-
+                //if(skinsB[i] != null) skinB = "\" \""+ skinsB[i];
                 sb.append("\t").append("{\t\"").append(this.skinsA[i]).append("\"").append(skinB).append("\t\t}").append(" // skin ").append(i).append("\n");
             }
         }
@@ -140,7 +133,7 @@ public class makeQC implements Paths {
                 sb.append(doRedstoneDustColor(skin));
 
             sb.append("}").append("\n");
-            WriteVMTFile(sb.toString(), tfMatDir, skin);
+            WriteVMTFile(sb.toString(), TEXTUREPACK, skin);
             vmts[i] = sb.toString();
             //System.out.println("i: " + i + ", "+vmts[i]);
             i++;
@@ -149,23 +142,22 @@ public class makeQC implements Paths {
         //i = 0;
         for (String skin : skinsB) {
             if (!skin.isEmpty()) {
+                sb = new StringBuilder();
+                sb.append("VertexlitGeneric").append("\n");
+                sb.append("{").append("\n");
+                sb.append("\t\"").append("$basetexture").append("\" \"").append(this.materialsPath)
+                        .append(this.cdMaterials).append("/").append(skin).append("\"\n");
 
-            sb = new StringBuilder();
-            sb.append("VertexlitGeneric").append("\n");
-            sb.append("{").append("\n");
-            sb.append("\t\"").append("$basetexture").append("\" \"").append(this.materialsPath)
-                    .append(this.cdMaterials).append("/").append(skin).append("\"\n");
+                if (!checkForPerSkins2(skin).isEmpty())
+                    sb.append(checkForPerSkins2(skin));
+                else sb.append(checkForSkinProps(skin));
 
-            if (!checkForPerSkins2(skin).isEmpty())
-                sb.append(checkForPerSkins2(skin));
-            else sb.append(checkForSkinProps(skin));
-
-            sb.append("}").append("\n");
-                WriteVMTFile(sb.toString(), tfMatDir, skin);
-            vmts[i] = sb.toString();
-                //System.out.println("i: " + i + ", "+vmts[i]);
-            i++;
-        }
+                sb.append("}").append("\n");
+                    WriteVMTFile(sb.toString(), TEXTUREPACK, skin);
+                vmts[i] = sb.toString();
+                    //System.out.println("i: " + i + ", "+vmts[i]);
+                i++;
+            }
         }
         return vmts;
     }
@@ -185,6 +177,7 @@ public class makeQC implements Paths {
 
             return "\t\"$color2\" \"{"+color[0]+" "+color[1]+" "+ color[2] +"}\" \n";
     }
+
     public String checkForSkinProps(String skin) {
         StringBuilder sb = new StringBuilder("");
 
@@ -192,6 +185,7 @@ public class makeQC implements Paths {
         if(this.alphatest != null) sb.append("\t\"").append("$alphatest\" \"").append(this.alphatest).append("\"\n");
         if(this.color != null) sb.append("\t\"").append("$color\" \"").append(this.color).append("\"\n");
         if(this.surfaceprop != null) sb.append("\t\"").append("$surfaceprop\" \"").append(this.surfaceprop).append("\"\n");
+        if(this.selfillum != null) sb.append("\t\"").append("$selfillum\" \"").append(this.selfillum).append("\"\n");
 
         if(this.animatedTextureVar != null) {
             sb.append("\t").append("Proxies").append("\n");
@@ -211,6 +205,7 @@ public class makeQC implements Paths {
         }
         return sb.toString();
     }
+
     public String checkForPerSkins2(String skin) {
         StringBuilder sb = new StringBuilder();
         for(int x = 0; x < this.perSkinProperties2.size(); x++) {
@@ -222,6 +217,7 @@ public class makeQC implements Paths {
                 if(prop.alphatest != null) sb.append("\t").append("\"$alphatest\" \"").append(prop.alphatest).append("\"\n");
                 if(prop.color != null) sb.append("\t").append("\"$color\" \"").append(prop.color).append("\"\n");
                 if(prop.surfaceprop != null) sb.append("\t").append("\"$surfaceprop\" \"").append(prop.surfaceprop).append("\"\n");
+                if(prop.selfillum != null) sb.append("\t\"").append("$selfillum\" \"").append(prop.selfillum).append("\"\n");
 
                 if(prop.animatedTextureVar != null) {
                     sb.append("\t").append("Proxies").append("\n");
@@ -244,6 +240,7 @@ public class makeQC implements Paths {
         }
         return sb.toString();
     }
+
     public void WriteQCFile(String toWrite, String qcPath, String name) {
 
         if(!qcPath.endsWith("/")) qcPath += "/";
@@ -271,6 +268,7 @@ public class makeQC implements Paths {
             //System.out.println(toWrite);
         }
     }
+
     protected static boolean PrepareCompiler(String studioMdlPath, String gameFolder, String QCName, String QCPath) {
 
         //path to compiler
@@ -279,10 +277,10 @@ public class makeQC implements Paths {
         String q = "\"";
         String batContent =
                 q+ studioMdlPath +q
-                        + " -game "+q+ gameFolder + q
-                        + " -nop4"
-                        + " -quiet"
-                        + " " + QCName;
+                + " -game "+q+ gameFolder + q
+                + " -nop4"
+                + " -quiet"
+                + " " + QCName;
 
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(QCPath + fileName));
@@ -305,31 +303,23 @@ public class makeQC implements Paths {
         //will need to use other paths. eg css, garrysmod, etc
         //String gameFolder = "D:/Steam/steamapps/common/Team Fortress 2/tf";
         //String gameFolder = tfDir;
-        String gameFolder = tfDirPath;
-        String binFolder = gameFolder.replace("tf", "bin/");
-        String studioMdlPath = binFolder + "studiomdl";
+        //String gameFolder = studioMdlPath;
+        //String binFolder = gameFolder.replace("tf", "bin/");
+        String studioMdlPath = new File(GAMEDIR).getParent() + "/bin" + "/studiomdl";
+        //String gameFolder
+        //gameDir += "studiomdl";
         int code = 1;
         //Create bat file
-        if(PrepareCompiler(studioMdlPath, gameFolder, QCName, QCPath)) {
-            // execute bat file
+        if(PrepareCompiler(studioMdlPath, GAMEDIR, QCName, QCPath)) {
+
+            // show or suppress model compile results
+            String showOutput = "/b";
+            if (DEBUG) showOutput = "";
+
             // Execute bat command
-            String[] args = {"cmd.exe", "/c", "start", QCName.replace(".qc","")+"_compiler.bat"};
+            String[] args = {"cmd.exe", "/c", "start", showOutput, QCName.replace(".qc","")+"_compiler.bat"};
             code = BatchRunner.runBat(args, QCPath);
 
-            //Process process = null;
-            /*int code = 1;
-            try {
-                ProcessBuilder pb = new ProcessBuilder("cmd.exe", "/c", "start", "compiler.bat");
-                pb.directory(new File(QCPath));
-                process = pb.start();
-                System.out.println(process.children() + ", pid: " + process.pid());
-                System.out.println("Waiting for process................................................................");
-                code = process.waitFor();
-
-                System.out.println("process returned?................................................................");
-            } catch (IOException | InterruptedException e) {
-                e.printStackTrace();
-            }*/
             if(code > 0) {
                 System.out.println("ERROR: p/waitFor returned " + code);
                 //GUIStart.failedCompiles.add(QCPath + QCName);
@@ -349,7 +339,7 @@ public class makeQC implements Paths {
             System.out.println("Compiler failed at PrepareCompiler"
                     + "("
                     + " studioMdlPath:"+ studioMdlPath
-                    +", gameFolder: "+ gameFolder
+                    +", gameFolder: "+ GAMEDIR
                     +", QCName: "+ QCName
                     +", QCPath: "+ QCPath
                     + ")"
@@ -358,24 +348,19 @@ public class makeQC implements Paths {
         }
         return code;
     }
+
     public void WriteVMTFile(String toWrite, String matPath, String skin) throws IOException {
 
-
-       // for(int i=0;i<toWrite.length;i++) {
-        //String skin = this.skinsA[i];
-        // account for skinsB
-
-        if (!matPath.endsWith("/")) matPath += "/";
-        String ModelMatPath = matPath + this.materialsPath + this.cdMaterials + "/";
+        //String ModelMatPath = OUTPUTDIR +"/materials/"+ TEXTUREPACK +"/minecraft_prop_materials/"+ this.cdMaterials + "/";
+        String ModelMatPath = GAMEDIR +"/materials/"+ TEXTUREPACK +"/minecraft_prop_materials/"+ this.cdMaterials + "/";
         // get vtf location and copy from to matPath
         // if vtfLocation is not null, get vtf from there
         // if path ends with /, add skin name, else use provided name
-        String fromPath = VTFsMatDir + "/";
+        String fromPath = VTFSMATDIR + "/";
         //if(this.vtfLocation != null)
         // check for vtf first at vtfLocation for vtf,
         // if vtflocation ends with /, search for all textures?
         // if vtflocation ends with name, search only for that name?
-
 
         String vtfLoc = data.getVtfLocation(skin);
         System.out.println("vtfLoc1: "+vtfLoc);
@@ -406,41 +391,33 @@ public class makeQC implements Paths {
         }
 
         File from = new File(fromPath);
+        // should prepend gameDir so it goes into /tf
         File to = new File(ModelMatPath + skin + ".vtf");
         System.out.println("from: "+ from);
         System.out.println("to: "+ to);
         TextureGetter.copyFile(from, to);
 
-        boolean testwriteOnly = false;
-
-        if (!testwriteOnly) {
-            try {
-                File theDir = new File(ModelMatPath);
-                if (!theDir.exists()) {
-                    theDir.mkdirs();
-                }
-                BufferedWriter writer = new BufferedWriter(new FileWriter(ModelMatPath + skin + ".vmt"));
-
-                writer.write(toWrite);
-                System.out.println("Written Content: " + ModelMatPath + skin + "\n");
-                writer.close();
-
-            } catch (IOException e) {
-
-                e.printStackTrace();
-
+        try {
+            File theDir = new File(ModelMatPath);
+            //File theDir = new File(ModelMatPath);
+            if (!theDir.exists()) {
+                theDir.mkdirs();
             }
-        } else {
-            System.out.println("Test Written Content: " + ModelMatPath + skin + "\n");
-            //System.out.println("if statement Folder location: "+ matPath);
-            //System.out.println(toWrite);
+            BufferedWriter writer = new BufferedWriter(new FileWriter(ModelMatPath + skin + ".vmt"));
+
+            writer.write(toWrite);
+            System.out.println("Written Content: " + ModelMatPath + skin + "\n");
+            writer.close();
+
+        } catch (IOException e) {
+
+            e.printStackTrace();
         }
-        //}
     }
 
     public String checkForAnims() {
         StringBuilder sb = new StringBuilder();
-        System.out.println("test run kfjdfdf: "+data.animatedTextureVar);
+        System.out.println("test run: "+data.animatedTextureVar);
         if(data.animatedTextureVar != null) {
             System.out.println("running animvmts");
             sb.append("\t").append("Proxies").append("\n");
@@ -455,6 +432,7 @@ public class makeQC implements Paths {
             return sb.toString();
         } else return "";
     }
+
     public String checkForPerSkins(String skin) {
         StringBuilder sb = new StringBuilder();
         for(int x = 0; x < perSkinProperties.size(); x++) {

@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 
 
-public class QCFunctions implements Paths {
+public class QCFunctions {
 
 	/** Scale to set in QC for model size. 
 	*  A scale of 48 would be 1.0. Scale = SetScale / 48 */

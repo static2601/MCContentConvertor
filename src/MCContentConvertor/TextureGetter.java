@@ -1,5 +1,7 @@
 package MCContentConvertor;
 
+import org.apache.commons.io.FileUtils;
+import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
 import javax.imageio.ImageIO;
@@ -7,18 +9,31 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.channels.FileChannel;
+import java.nio.file.Files;
 import java.util.*;
 import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+import static MCContentConvertor.GUIStart.*;
+import static MCContentConvertor.Pathnames.*;
 
-public class TextureGetter implements Paths {
 
+public class TextureGetter {
+
+	public static GUIStart guiStartRef;
 	static QCFunctions qc = new QCFunctions();
+	private getSettingsData settings;
 	//private static int fileCount = 0;
 	public static ArrayList<String> animatedVTFs = new ArrayList<String>();
+	//String VTFsMatDir = "materials/"+ texturePack +"/";
+	//String VTFsMatDir = gameDir + "/materials/"+ texturePack +"/";
+	//String VTFsMatDir = OUTPUTDIR + "/materials/"+ TEXTUREPACK +"/";
+    static String VTFsMatDir = VTFSMATDIR + "/materials/"+ TEXTUREPACK +"/";
 
+	public TextureGetter() throws IOException, ParseException {
+		this.settings = new getSettingsData();
+	}
 	/**
 	 * Extract pngs from jar
 	 * @param jarFile
@@ -26,37 +41,39 @@ public class TextureGetter implements Paths {
 	 * @return True on success
 	 * @throws IOException
 	 */
-	public static boolean ExtractJar(String jarFile, String destDir) throws IOException {
+	public boolean ExtractJar(String jarFile, String destDir, boolean base) throws IOException {
 		
 		//print to GUI Extracting Textures...
-		//GUIStart.set_progress_label("Extracting Textures...", false);
-		System.out.println(dash+"Extracting Textures..."+dash);
+		String sBase = "Base ";
+		if (!base) sBase = "Custom ";
+		guiStartRef.set_progress_label("Extracting "+sBase+"Textures...", false, "");
+		System.out.println(dash+"Extracting "+sBase+"Textures..."+dash);
 
 		JarFile jar = new JarFile(jarFile);
 		Enumeration<JarEntry> enumEntries = jar.entries();
 		while (enumEntries.hasMoreElements()) {
 		    JarEntry file = enumEntries.nextElement();
-		   
+
 			File f = new File(destDir + File.separator + file.getName());
-			
+
 			String[] aStr  = file.getName().split("/");
 			String fn = file.getName().split("/")[aStr.length-1];
 			String str2 = file.getName().replace(fn, "");
 			boolean splitTexture = false;
 			boolean isMeta = false;
-			
+
 			//needs to get only the directories we are using
 			if(f.getName().endsWith(".png") || f.getName().endsWith(".mcmeta")) {
-				
+
 				if(f.getName().endsWith(".mcmeta")) isMeta = true;
-				
+
 				if(str2.endsWith("assets/minecraft/textures/block/")
 				|| str2.contains("assets/minecraft/textures/entity/")) {
-					
-					
+
+
 					if(!f.exists())
 						f.getParentFile().mkdirs();
-					
+
 					if(str2.endsWith("assets/minecraft/textures/block/")){
 
 						//set variable to indicate true to run this function AFTER extraction
@@ -65,6 +82,7 @@ public class TextureGetter implements Paths {
 
 					//InputStream is = jar.getInputStream(file);
 					//FileOutputStream fos = new FileOutputStream(f);
+					//TODO would this be faster is writing all at once?
 					if(!isMeta) {
 						InputStream is = jar.getInputStream(file); // get the input stream
 						FileOutputStream fos = new FileOutputStream(f);
@@ -75,15 +93,26 @@ public class TextureGetter implements Paths {
 						fos.close();
 						is.close();
 					}
+					//TODO had to uncheck because it was erroring interpolating frames
+					// after trying to run a 32bit texturepack, but still doesnt work
+					// trying to run the one weve been using
 				    if(splitTexture && !isMeta) splitTextures(f);
 				}
 			}
 		}
 		jar.close();
+
+		// move premade assets to pngs folder
+		// Assets/Textures/air.png
+		// textures/pngs/minecraft_original/assets/minecraft/textures/block
+		// Path of the file where data is to be copied
+
+		copyFile(new File(USERDIR + "/Assets/Textures/air.png"),
+                new File(USERDIR + "/textures/pngs/minecraft_original/assets/minecraft/textures/block/air.png"));
 		
 		//print to GUI Processing label
-		//GUIStart.set_progress_label("Done!", true);
-		System.out.println("Extracting Textures...Done!");
+		guiStartRef.set_progress_label("Extracting "+sBase+"Textures...Done!", true, "");
+		System.out.println("Extracting "+sBase+"Textures...Done!");
 		
 		return true;
 	}
@@ -145,7 +174,7 @@ public class TextureGetter implements Paths {
 				}
 				//add images to array of images needing interpolated
 				imageList.add(images);
-				
+				//TODO
 				String fn = f.getName().split(".png")[0];
 				List<Integer> g = AnimVMTProps.animVMTData.get(fn);
 				
@@ -171,13 +200,13 @@ public class TextureGetter implements Paths {
 		}
 	}
 	
-	public static void MakeVTFs() throws IOException, InterruptedException, ParseException {
+	public void MakeVTFs() throws IOException, InterruptedException, ParseException {
 		
 		//get batch file or create batch file with properties
 		//and set path of pngs. set output folder to vtfs for now.
 		//need to do non recursive, when done, change input to /entity and output to /entity
 		//need to get these directories from mat paths i did
-
+		guiStartRef.set_progress_label("Checking Models for Texture Paths...", false, "");
 		System.out.println(dash+"Checking Models for Texture Paths..."+dash);
 
 		/* folder path for current model material path retrieved from
@@ -186,10 +215,12 @@ public class TextureGetter implements Paths {
 		List<String> arr = qc.getDirUniquePaths(false);
 		//arr.add("\\entity\\uvmap");
 		arr.forEach(s->System.out.println("arr: "+s));
+		guiStartRef.set_progress_label("Checking Models for Texture Paths...Done!", true, "");
 		System.out.println("Checking Models for Texture Paths...Done!");
 		//print to GUI Processing label
 		//GUIStart.set_progress_label("Making VTFs...", false);
 
+		guiStartRef.set_progress_label("Making VTFs...", false, "");
 		System.out.println(dash+"Making VTFs..."+dash);
 
 		//ArrayList<String> tempFolders = new ArrayList<>();
@@ -210,7 +241,10 @@ public class TextureGetter implements Paths {
 				System.out.println("Skipping this modelMatPath " + modelMatPath);
 				continue;
 			}
-			if(modelMatPath.equals("\\block")) modelMatPath2 = "";
+			//if(modelMatPath.equals("\\block")) modelMatPath2 = "";
+			// added because modelJson data vtfLocation: block/ was being picked up separately
+			// and adding block folder with all vtfs inside it
+			if(modelMatPath.equals("\\block") || modelMatPath.equals("\\block\\")) modelMatPath2 = "";
 
 			//path to model's materials (modelMatPath)
 			String prefix = "\\assets\\minecraft\\textures";
@@ -226,61 +260,7 @@ public class TextureGetter implements Paths {
 				//f = inputFolder.replace("\\*.png", "");
 			}
 
-			//File file = new File(f);
-			// dont need to recheck our files of temp folders
-			// !animation textures not converting because its runs through this
-			// and is ...
-			/*
-			if(!convertingTemp && 1 == 2) {
-				System.out.println("convertingTemp is false, does this need to run??<-----------------------------------------------------------------------------");
-				// scan all files for dimensions other than 16x16
-				// put references to all in array
-				// reprocess later one at a time with a custom dimension
-				int size = file.listFiles().length;
-				for (int x = 0; x < size; x++) {
-
-					File ff = Objects.requireNonNull(file.listFiles())[x].getAbsoluteFile();
-					String name = ff.getName();
-					if (ff.getName().endsWith(".png") && ff.getAbsolutePath().contains("textures\\entity\\")) {
-
-						BufferedImage bimg = ImageIO.read(ff);
-						if (bimg.getHeight() != bimg.getWidth()) {
-
-							// make folder in textures named temp32x64 or whatever the height by width is
-							// copy to this folder, the file
-							// add this folder to the queue of subfolders to be checked
-							// check if subfolder is this one and convert all of and
-							// put them where they go, how do we know where they go? by there original path?
-							// should we wait for everything to be done converting before adding to queue? yes wait until
-							// all folders have been populated with the files
-							System.out.println("ff: " + ff);
-							//make destination by using height and width
-							String tempFolder = "temp" + bimg.getHeight() + "x" + bimg.getWidth();
-							//String ffFolder = ff.getAbsolutePath().replace(ff.getName(), "").replace("entity", tempFolder);
-							String ffFolder = ff.getAbsolutePath().replace("entity", tempFolder);
-							File ffDest = new File(ffFolder);
-
-							// copy file to temp folder of dimensions
-							// folder should be created if not exists
-							System.out.println("copyfile from: "+ff);
-							System.out.println("copyfile to: "+ ffDest);
-							copyFile(ff, ffDest);
-							String path = ffDest.toString().split("textures")[ffDest.toString().split("textures").length-1];
-							String path2 = path.replace(ffDest.getName(), "").replace("\\", "/");
-							System.out.println("path2: "+path2);
-							//tempFolders.add(path2);
-
-//						JSONObject jobj = new JSONObject();
-//						jobj.put("file", ff);
-//						jobj.put("height", bimg.getHeight());
-//						jobj.put("width", bimg.getWidth());
-//						toConvertDems.add(jobj);
-						}
-					}
-				}
-			}*/
-
-			// modelMatPath2 is a copy of modelMAtPath, if our run is on /block,
+			// modelMatPath2 is a copy of modelMatPath, if our run is on /block,
 			// then modelMatPath2 equals "", below statement wont run
 			if(modelMatPath2.endsWith("/")) {
 				int  lastSlash = modelMatPath2.lastIndexOf("/");
@@ -307,7 +287,7 @@ public class TextureGetter implements Paths {
 			String doResize = "";
 			if(isBlock) doResize = " -rwidth "+resizeHeight+" -rheight "+resizeWidth;
 			String batContent = ""
-					+ "src\\VTFEdit\\bin\\x64\\vtfcmd.exe"
+					+ q+ VTFCMDEXE +q
 					+ " -folder "+q+inputFolder +q
 					+ " -output "+q+outputFolder+q
 					+ doResize
@@ -320,65 +300,57 @@ public class TextureGetter implements Paths {
 					//+ " -pause"
 					+ "";
 			
-			BufferedWriter writer = new BufferedWriter(new FileWriter(UserDir + "\\" + fileName));
+			BufferedWriter writer = new BufferedWriter(new FileWriter(BATDIR + "\\" + fileName));
 			
 			//Create bat file
 			writer.write(batContent); 
 			writer.close();
 
+			// show or suppress model compile results
+			String showOutput = "/b";
+			if (DEBUG) showOutput = "";
+
 			// execute bat file
-
-			// Execute command
-			String[] args = {"cmd.exe", "/C", "Start", "convert"+(i+1)+".bat"};
-			int code = BatchRunner.runBat(args, UserDir);
-
-			/*int code = 1;
-			try {
-				ProcessBuilder pb = new ProcessBuilder("cmd.exe", "/c", "start", "convert"+(i+1)+".bat");
-				pb.directory(new File(UserDir));
-				Process process = pb.start();
-				code = process.waitFor();
-				System.out.println("Waiting for process...");
-			}
-			catch (IOException | InterruptedException e) {
-				e.printStackTrace();
-			}*/
+			String[] args = {"cmd.exe", "/c", "Start", showOutput, "convert"+(i+1)+".bat"};
+			int code = BatchRunner.runBat(args, BATDIR);
 
 		    if(code >= 0) {
 				if(code > 0) {
 			 	    //something didnt go right
-			 	    System.out.println("Process returned "+ code + " for subFolder: "+ modelMatPath);
+			 	    System.err.println("Process returned "+ code + " for subFolder: "+ modelMatPath);
 					// else here to stop the program ...
-					System.exit(0);
+					//System.exit(0);
 			    }
 
 			    i++;
 			    //if array is on block, subfolder2 will equal "".
 			    //check if all files are there before running next bat
 			    if(modelMatPath2.isEmpty()) {
-			 	   int fiCount = PNGFolderInput.listFiles().length;
+			 	   int fiCount = Objects.requireNonNull(PNGFolderInput.listFiles()).length;
 			 	   //check if all files extracted were made into VTFs, then continue
+					//TODO
 			 	   //DOES NOT RUN IF OLD FILE STILL IN FOLDER!	Delete folder before starting or something
 			 	   System.out.println("Converting VTFs 0 / "+fiCount);
-			 	   while(folderOutput.listFiles().length < fiCount-1) {
-			 		   //System.out.println(folderOutput.listFiles().length+" <--length|fileCount--> "+fiCount);
+			 	   while(Objects.requireNonNull(folderOutput.listFiles()).length < fiCount-1) {
+			 		   System.out.println(Objects.requireNonNull(folderOutput.listFiles()).length+" <--length|fileCount--> "+fiCount);
 			 	   }
-			 	   System.out.println("Converting VTFs "+folderOutput.listFiles().length+" / "+fiCount);
+			 	   System.out.println("Converting VTFs "+ Objects.requireNonNull(folderOutput.listFiles()).length+" / "+fiCount);
 				}
 		   	}
 		}
 		
 		//print to GUI Processing label
 		//GUIStart.set_progress_label("Done!", true);
+		guiStartRef.set_progress_label("Making VTFs...Done!", true, "");
 		System.out.println("Making VTFs...Done!");
-		
-		//MakeAnimVTFs();
+
 	}
 
-	public static void MakeAnimVTFs() throws IOException, InterruptedException {
+	public void MakeAnimVTFs() throws IOException, InterruptedException {
 		
 		//print to GUI Processing label
 		//GUIStart.set_progress_label("Making Animated VTFs...", false);
+		guiStartRef.set_progress_label("Making Animated VTFs...", false, "");
 		System.out.println(dash+"Making Animated VTFs..."+dash);
 
 		String inputFolder = Generated +"\\*.png";
@@ -399,7 +371,7 @@ public class TextureGetter implements Paths {
 		System.out.println(fi.listFiles().length +", "+ fiCount);
 		
 		String batContent = ""
-				+ "src\\VTFEdit\\bin\\x64\\vtfcmd.exe"
+				+ q+ VTFCMDEXE +q
 				+ " -folder "+q+inputFolder +q
 				+ " -output "+q+outputFolder+q
 				+ " -rwidth 128 -rheight 128"
@@ -412,16 +384,16 @@ public class TextureGetter implements Paths {
 				//+ " -pause"
 				+ "";
 		
-		BufferedWriter writer = new BufferedWriter(new FileWriter(UserDir + "\\" + fileName));
+		BufferedWriter writer = new BufferedWriter(new FileWriter(BATDIR + "\\" + fileName));
 		
 		//make bat file
 		writer.write(batContent); 
 		writer.close();
-		System.out.println(UserDir + "/" + fileName);
+		System.out.println(BATDIR + "/" + fileName);
 
 		// Execute command
-       	String[] args = {"cmd.exe", "/C", "Start", "convertAnim.bat"};
-	   	int returned = BatchRunner.runBat(args, UserDir);
+       	String[] args = {"cmd.exe", "/c", "Start", "/b", "convertAnim.bat"};
+	   	int returned = BatchRunner.runBat(args, BATDIR);
 	   	//Process p = Runtime.getRuntime().exec(args);
 	   	//int returned = p.waitFor();
 
@@ -439,6 +411,8 @@ public class TextureGetter implements Paths {
 				System.out.println(f.listFiles().length + " < " + fiCount);
 			}
 			System.out.println(f.listFiles().length+" - 100% - "+fiCount);
+
+		   guiStartRef.set_progress_label("Making Animated VTFs...Done!", true, "");
 		   System.out.println("Making Animated VTFs...Done!");
 			//MakeAnimVMTs();
 		   // move animated vtf from vtf2 to vtf folder
@@ -447,8 +421,10 @@ public class TextureGetter implements Paths {
 		   MoveAnimVTF(f);
 	   }
 	}
-	public static void MoveAnimVTF(File f) throws IOException {
 
+	public void MoveAnimVTF(File f) throws IOException {
+
+		guiStartRef.set_progress_label("Moving Animated VTFs to Textures Folder...", false, "");
 		System.out.println(dash+"Moving Animated VTFs to Textures Folder..."+dash);
 
 		File[] files = f.listFiles();
@@ -460,21 +436,22 @@ public class TextureGetter implements Paths {
 				// copy to vtf folder (minecraft_original)
 				String fname = files[i].getName().replace("_0", "");
 				File from = new File(files[i].getAbsolutePath());
+
 				File to = new File(VTFsMatDir + "\\" + fname);
 				boolean written = copyFile(from, to);
 				//System.out.print("from: " + from + ", to: "+ to + "...");
 				System.out.println(to+"...written = "+written);
 			}
 		}
+		guiStartRef.set_progress_label("Moving Animated VTFs to Textures Folder...Done!", true, "");
 		System.out.println("Moving Animated VTFs to Textures Folder...Done!");
 	}
-	public static void MakeVMTs() {
 
+	public void MakeVMTs() {
 
+		guiStartRef.set_progress_label("Making VMTs...", false, "");
 		System.out.println(dash+"Making VMTs..."+dash);
 
-		// runs before all vtfs are fully generated. needs to wait or do something
-		// get files size, wait for 1 second, check size, if the same continue
 		File f = new File(VTFsMatDir);
 		String outputPath = f.toString();
 		
@@ -493,71 +470,143 @@ public class TextureGetter implements Paths {
 		String vmt = "";
 		
 		//create VMT file for every name.vtf
-		//System.out.println("vmts size: "+ vmts.size());
 		for(int i = 0; i < vmts.size(); i++) {
-			
-			String matdir = VTFsMatDir.replace(VTFs1, "");
+
+			String matdir = VTFsMatDir.split("materials/")[1];
 			String n = vmts.get(i).split("\\.")[0];
 
-			// check for transparent and place
-			int translucent = CheckTranslucent(n);
+			String setAlpha = "";
+			int alphatest = CheckAlphaTest(n);
+			if (alphatest == 0)
+				setAlpha = "	\"$translucent\" "+CheckTranslucent(n)+"\n";
+			else setAlpha = "	\"$alphatest\" "+alphatest+"\n";
+
 			String color = "";
 			//take names and create a vmt for all
 			vmt = ""
 				+ ""
 				+ "\"LightmappedGeneric\"\n"
 				+ "{\n"
-				+ "	\"$basetexture\" \""+ matdir +"/"+ n +"\"\n"
-				+ "	\"$translucent\" "+translucent+"\n"
+				+ "	\"$basetexture\" \""+ matdir +""+ n +"\"\n"
+				+ setAlpha
 				+ setColor(n)
+				+ setOtherProps(n)
 				+ "}";
 
 			WriteFile(vmt, path+"\\", n+".vmt");
 		}
+		guiStartRef.set_progress_label("Making VMTs...Done!", true, "");
 		System.out.println("Making VMTs...Done!");
 	}
+
 	public static int CheckTranslucent(String vtf) {
 		if(vtf.contains("glass")) return 1;
 		if(vtf.contains("vine")) return 1;
 		if(vtf.contains("lichen")) return 1;
 		if(vtf.contains("ladder")) return 1;
 		if(vtf.contains("vein")) return 1;
-		if(vtf.contains("water")) return 1;
+		//if(vtf.contains("water")) return 1;
 		if(vtf.equals("rail")) return 1;
 		if(vtf.equals("lily_pad")) return 1;
 		if(vtf.equals("ice")) return 1;
 		if(vtf.equals("pink_petals")) return 1;
 		if(vtf.equals("iron_bars")) return 1;
 		if(vtf.endsWith("_grate")) return 1;
-		if(vtf.endsWith("_trapdoor")) return 1;
+
+		if(vtf.endsWith("_trapdoor")) {
+			if (vtf.endsWith("dark_oak_trapdoor")) return 0;
+			if (vtf.endsWith("spruce_trapdoor")) return 0;
+			if (vtf.endsWith("birch_trapdoor")) return 0;
+			return 1;
+		}
 		if(vtf.endsWith("_door")) return 1;
-		if(vtf.endsWith("_leaves")) return 1; //may want to leave opaque due to rendering
+		//if(vtf.endsWith("_leaves")) return 1; //may want to leave opaque due to rendering
 
 		return 0;
 	}
+
+	// if this is true, override transparency
+	public int CheckAlphaTest(String vtf){
+
+		// check first for transparency in texture settings
+		for(Object texture : this.settings.getTexturesSettings()) {
+			JSONObject jobj = (JSONObject) texture;
+			if (jobj.get("textureName").toString().endsWith("_leaves")) {
+				//System.out.println("jobj.get(\"textureName\").toString(): "+ jobj.get("textureName").toString());
+				if (jobj.get("textureName").toString().equals(vtf)) {
+					boolean transparent = (boolean) jobj.get("transparent");
+					System.out.println("transparent: "+ transparent);
+					if(transparent) return 1;
+					else return 0;
+				}
+			}
+		}
+		if(vtf.endsWith("_trapdoor")) {
+			if (vtf.endsWith("dark_oak_trapdoor")) return 0;
+			if (vtf.endsWith("spruce_trapdoor")) return 0;
+			if (vtf.endsWith("birch_trapdoor")) return 0;
+			return 1;
+		}
+		if (vtf.endsWith("_leaves")) return 1;
+		return 0;
+	}
+
 	public static String setColor(String vtf) {
-		if (vtf.equals("oak_leaves")) return thisColor("[0.34 0.71 0.07]");
-		if (vtf.equals("acacia_leaves")) return thisColor("[0.34 0.71 0.07]");
-		if (vtf.equals("jungle_leaves")) return thisColor("[0.34 0.71 0.07]");
-		if (vtf.equals("spruce_leaves")) return thisColor("[0.34 0.71 0.07]");
-		if (vtf.equals("dark_oak_leaves")) return thisColor("[0.34 0.71 0.07]");
-		if (vtf.equals("birch_leaves")) return thisColor("[0.34 0.71 0.07]");
-		if (vtf.equals("vine")) return thisColor("[0.34 0.71 0.07]");
-		if (vtf.equals("lily_pad")) return thisColor("[0.55 0.76 0.0]");
-		if (vtf.equals("grass_block_top")) return thisColor("[0.55 0.76 0.0]");
+//		if (vtf.equals("oak_leaves")) return thisColor("[0.34 0.71 0.07]");
+//		if (vtf.equals("acacia_leaves")) return thisColor("[0.34 0.71 0.07]");
+//		if (vtf.equals("jungle_leaves")) return thisColor("[0.34 0.71 0.07]");
+//		if (vtf.equals("spruce_leaves")) return thisColor("[0.34 0.71 0.07]");
+//		if (vtf.equals("dark_oak_leaves")) return thisColor("[0.34 0.71 0.07]");
+//		if (vtf.equals("birch_leaves")) return thisColor("[0.34 0.71 0.07]");
+//		if (vtf.equals("vine")) return thisColor("[0.34 0.71 0.07]");
+//		if (vtf.equals("lily_pad")) return thisColor("[0.55 0.76 0.0]");
+//		if (vtf.equals("grass_block_top")) return thisColor("[0.55 0.76 0.0]");
+		//if (vtf.contains("water")) return thisColor("[0.23 0.27 0.80]");
 
 		return "";
 	}
-	private static String thisColor(String c) {
-		//String c = "(0, 0, 0)";
-		return "\t$color \"" + c + "\"\n";
+
+	public static String setOtherProps(String vtf) {
+		if (vtf.equals("glowstone")) return propValue("selfillum", "1");
+		if (vtf.contains("lava")) return propValue("selfillum", "1");
+		if (vtf.equals("redstone_lamp_on")) return propValue("selfillum", "1");
+		if (vtf.equals("water_still")) return MakeWater();
+		if (vtf.equals("water_flow")) return MakeWater();
+
+		return "";
 	}
 
+	private static String propValue(String prop, String val) {
+		StringBuilder sb = new StringBuilder();
+		prop = prop.replace("$", "");
+		sb.append("\t\"").append("$").append(prop).append("\" \"").append(val).append("\"\n");
+		return sb.toString();
+		//return "\t$"+ prop +" \"" + val + "\"\n";
+	}
+
+	private static String thisColor(String c) {
+		return "\t\"$color\" \"" + c + "\"\n";
+	}
+
+	private static String MakeWater() {
+		String body =
+				"\t\"$translucent\" 1\n" +
+				"\t\"$abovewater\" 1   //This is what tell the water to be on top.\n" +
+				"\t\"%compilewater\" 1 // to compile as water\n" +
+				"\t\"$surfaceprop\" \"water\" //for physics\n" +
+				"\t\"$fogenable\" 1 // set to 0 for no fog\n" +
+				"\t\"$fogcolor\" \"[.20 .10 .60]\" // RGB setting for color of the fog. 0 is white 1 is black.\n" +
+				"\t\"$fogstart\" 0 // keep this a 0 or the fog will not look right\n" +
+				"\t\"$fogend\" 500 //larger the # the farther the fog will start from the player.\n" +
+				"\t\"$bottommaterial\" \"minecraft_original/water_still\" //see below for waterunder.vmt\n" +
+				" ";
+		return body;
+	}
 
 	/** Make VMTs for Animated vtfs in \vtfs2, outputs \MaterialsDir */
 	public static void MakeAnimVMTs() {
 
-
+		guiStartRef.set_progress_label("Making Animated VMTs...", false, "");
 		System.out.println(dash+"Making Animated VMTs..."+dash);
 
 		//TODO needs animation frames and done properly done before generating animated vmts.
@@ -578,15 +627,19 @@ public class TextureGetter implements Paths {
 			}
 		}
 		//System.out.println(vmts);
+		//TODO
+		// should these go into vtfs or vtf2?
 		String path = VTFsMatDir;
 		String vmt = "";
 		
 		//create VMT file for every name.vtf
 		for(int i = 0; i < vmts.size(); i++) {
-			
+
 			String VMT = vmts.get(i);
+			// n is filename without _00 suffix
 			String n = VMT.substring(0, VMT.lastIndexOf("_"));
-			String matdir = VTFsMatDir.replace(VTFs1, "");
+			String matdir = VTFsMatDir.split("materials/")[1];
+			//String matdir = VTFsMatDir.replace(VTFs1, "");
 
 			//get base vtf so only runs once
 			if(vmts.get(i).equals(n+"_0.vtf")) {
@@ -599,8 +652,9 @@ public class TextureGetter implements Paths {
 				vmt = ""
 					+ "\"LightmappedGeneric\"\n"
 					+ "{\n"
-					+ "	\"$basetexture\" \""+ matdir +"\\"+ n +"\"\n"
+					+ "	\"$basetexture\" \""+ matdir +""+ n +"\"\n"
 					+ "	\"$alphatest\" "+at+"\n"
+					+ setOtherProps(n)
 					+ "\n"
 					+ "\tProxies\n"
 					+ "\t{\n"
@@ -616,6 +670,7 @@ public class TextureGetter implements Paths {
 				WriteFile(vmt, path+"\\", n+".vmt");
 			}
 		}
+		guiStartRef.set_progress_label("Making Animated VMTs...Done!", true, "");
 		System.out.println("Making Animated VMTs...Done!");
 	}
 	
@@ -645,8 +700,8 @@ public class TextureGetter implements Paths {
 		//add to array of filenames to iterate through
 		//img1 = arr[0], img2 = arr[1]
 		//img1 = arr[1], img2 = arr[2] etc until length -1 is reached
-		// your directory
 
+		// your directory
 		boolean framesArr = false;
 		String outputfile = Generated+"\\";
 		
@@ -656,14 +711,12 @@ public class TextureGetter implements Paths {
 		int ncnt = 0;
 		//System.out.println(filepath+" <-fp | tf-> "+totalFrames);
 		
-		
 		int sl = filepath.lastIndexOf("\\");
 		File fs = new File(filepath.substring(0, sl+1));
 		String fn = filepath.substring(sl+1, filepath.length()).replace(".png", "");
 		
 		//only works if name ends with _00 double digits, add 4 for .png
 		int nameLength = fn.length() + 3 + 4;
-		
 		
 		File[] matchingFiles = fs.listFiles(new FilenameFilter() {
 		    public boolean accept(File dir, String name) {
@@ -859,10 +912,7 @@ public class TextureGetter implements Paths {
 			}
 		}
 	}
-	private static void getMetaData() {
-		
-		
-	}
+	private static void getMetaData() {}
 	
 	@SuppressWarnings("resource")
 	public static boolean copyFile(File sourceFile, File destFile) throws IOException {
@@ -891,6 +941,12 @@ public class TextureGetter implements Paths {
 		else return false;
 
 	}
+	public static void copyDirectory(String sourceDirectoryLocation, String destinationDirectoryLocation) throws IOException {
+		File sourceDirectory = new File(sourceDirectoryLocation);
+		File destinationDirectory = new File(destinationDirectoryLocation);
+		FileUtils.copyDirectory(sourceDirectory, destinationDirectory);
+	}
+
     public static void sortByNumber(File[] files) {
 
 		Arrays.sort(files, new Comparator<File>() {
@@ -920,6 +976,7 @@ public class TextureGetter implements Paths {
         //    System.out.println(f.getName());
         //}
     }//16-31, 0-15
+
     private static int[] numbers = {16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28,
     		29, 30, 31, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
     public static ArrayList<String> sortNumbers(File[] sourceFiles, int[] numbers){
@@ -942,6 +999,7 @@ public class TextureGetter implements Paths {
     	return arr;
     	
     }
+
     private static int extractNumber(String name) {
         
     	int i = 0;
@@ -963,6 +1021,7 @@ public class TextureGetter implements Paths {
         }
         return i;
     }
+
     private static int r = 0, g = 0, b = 0, a = 0;
 	private static void getRGB(int rawRGB) {
 		

@@ -3,14 +3,13 @@ package MCContentConvertor;
 import java.io.File;
 import java.io.IOException;
 
-public class BatchRunner implements Paths {
+public class BatchRunner{
     public BatchRunner() {}
 
     public static Process process = null;
     public static int runBat(String[] args, String batDir) {
 
         // execute bat file
-
         int code = -1;
         try {
             ProcessBuilder pb = new ProcessBuilder(args);

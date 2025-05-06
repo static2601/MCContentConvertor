@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+//TODO this shouldnt be needed since we can get all mcdata files
+// data to determine interpolations needed?
 public class AnimVMTProps extends QCFunctions {
 	
 	public static Map<String, List<Integer>> animVMTData = new HashMap<>();
@@ -60,8 +62,8 @@ public class AnimVMTProps extends QCFunctions {
 		vmt("tall_seagrass_bottom", 0, 2, 1);
 		vmt("tall_seagrass_top", 0, 2, 1);
 		vmt("warped_stem", 0, 10, 0);//interp
-		vmt("water_flow", 0, 0, 1);//same?
-		vmt("water_still", 0, 2, 1);
+		vmt("water_flow", 0, 0, 0);//same?
+		vmt("water_still", 0, 2, 0);
 		
 	}
 	

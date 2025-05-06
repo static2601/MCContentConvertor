@@ -95,7 +95,7 @@
         "birch_planks", "jungle_planks", "dark_oak_planks",
         "oak_planks", "spruce_planks", "acacia_planks", "stone",
         "mangrove_planks", "cherry_planks", "bamboo_planks", "crimson_planks",
-        "warped_planks", "polished_blackstone"
+        "warped_planks", "polished_blackstone", "pale_oak_planks"
       ]
     }],
     "skinProperties" : [{
@@ -213,6 +213,41 @@
     }]
   },
   {
+    "modelname": "Door2",
+    "type": "staticprop",
+    "body": "Door",
+    "cdmaterials": "Door",
+    "sequence": [{
+      "idle": "Door"
+    }],
+    "surfaceprop": "wood",
+    "collisionmodel": "Door_collision",
+    "collisionOptions" : [
+      "$automass",
+      "$concave"
+    ],
+    "textureGroup": [{
+      "skinsA": [
+        "oak_door_bottom" ,"pale_oak_door_bottom"
+      ],
+      "skinsB": [
+        "oak_door_top", "pale_oak_door_top"
+      ]
+    }],
+    "skinProperties" : [{
+      "skinA" : [{
+        "surfaceprop" : "Wood",
+        "alphatest" : "1",
+        "nocull" : "0"
+      }],
+      "skinB" : [{
+        "surfaceprop" : "Wood",
+        "alphatest" : "1",
+        "nocull" : "0"
+      }]
+    }]
+  },
+  {
     "modelname": "LilyPad",
     "type": "staticprop",
     "body": "XZPlaneA",
@@ -228,7 +263,7 @@
     ],
     "textureGroup": [{
       "skinsA": [
-        "lilypad"
+        "lily_pad"
       ]
     }],
     "skinProperties": [{
@@ -301,7 +336,7 @@
         "birch_planks", "jungle_planks", "dark_oak_planks",
         "oak_planks", "spruce_planks", "acacia_planks", "mangrove_planks",
         "cherry_planks", "bamboo_planks", "crimson_planks", "warped_planks",
-        "nether_bricks"
+        "nether_bricks", "pale_oak_planks"
       ]
     }],
     "skinProperties": [{
@@ -331,7 +366,7 @@
         "birch_planks", "jungle_planks", "dark_oak_planks",
         "oak_planks", "spruce_planks", "acacia_planks", "mangrove_planks",
         "cherry_planks", "bamboo_planks", "crimson_planks", "warped_planks",
-        "nether_bricks"
+        "nether_bricks", "pale_oak_planks"
       ]
     }],
     "skinProperties": [{
@@ -361,7 +396,7 @@
         "birch_planks", "jungle_planks", "dark_oak_planks",
         "oak_planks", "spruce_planks", "acacia_planks", "mangrove_planks",
         "cherry_planks", "bamboo_planks", "crimson_planks", "warped_planks",
-        "nether_bricks"
+        "nether_bricks", "pale_oak_planks"
       ]
     }],
     "skinProperties": [{
@@ -653,7 +688,7 @@
         "oak", "spruce", "birch",
         "jungle", "acacia", "dark_oak",
         "mangrove", "cherry", "bamboo",
-        "crimson", "warped"
+        "crimson", "warped", "pale_oak"
       ]
     }],
     "skinProperties": [{
@@ -686,7 +721,7 @@
         "oak", "spruce", "birch",
         "jungle", "acacia", "dark_oak",
         "mangrove", "cherry", "bamboo",
-        "crimson", "warped"
+        "crimson", "warped", "pale_oak"
       ]
     }],
     "skinProperties": [{
@@ -719,7 +754,7 @@
         "oak", "spruce", "birch",
         "jungle", "acacia", "dark_oak",
         "mangrove", "cherry", "bamboo",
-        "crimson", "warped"
+        "crimson", "warped", "pale_oak"
       ]
     }],
     "skinProperties": [{
@@ -752,7 +787,7 @@
         "oak", "spruce", "birch",
         "jungle", "acacia", "dark_oak",
         "mangrove", "cherry", "bamboo",
-        "crimson", "warped"
+        "crimson", "warped", "pale_oak"
       ]
     }],
     "skinProperties": [{
@@ -785,7 +820,7 @@
         "oak", "spruce", "birch",
         "jungle", "acacia", "dark_oak",
         "mangrove", "cherry", "bamboo",
-        "crimson", "warped"
+        "crimson", "warped", "pale_oak"
       ]
     }],
     "skinProperties": [{
@@ -816,7 +851,7 @@
         "acacia_trapdoor", "dark_oak_trapdoor", "mangrove_trapdoor", "cherry_trapdoor",
         "bamboo_trapdoor", "crimson_trapdoor", "warped_trapdoor", "iron_trapdoor",
         "copper_trapdoor", "exposed_copper_trapdoor", "weathered_copper_trapdoor",
-        "oxidized_copper_trapdoor"
+        "oxidized_copper_trapdoor", "pale_oak_trapdoor"
       ]
     }],
     "skinProperties": [{
@@ -928,7 +963,7 @@
       "skinsA": [
         "tall_grass_bottom","tall_grass_top","torchflower","torchflower_crop_stage0","torchflower_crop_stage1",
         "tube_coral","twisting_vines","twisting_vines_plant","warped_fungus","warped_roots","weeping_vines",
-        "weeping_vines_plant","white_tulip","wither_rose"
+        "weeping_vines_plant","white_tulip","wither_rose", "pale_oak_sapling", "pale_hanging_moss", "firefly_bush"
       ]
     }],
     "skinProperties" : [{
@@ -1050,7 +1085,7 @@
         "birch_planks", "jungle_planks", "dark_oak_planks",
         "oak_planks", "spruce_planks", "acacia_planks", "mangrove_planks",
         "cherry_planks", "bamboo_planks", "crimson_planks", "warped_planks",
-        "nether_bricks"
+        "nether_bricks", "pale_oak_planks"
       ]
     }],
     "skinProperties": [{
@@ -1080,7 +1115,7 @@
         "birch_planks", "jungle_planks", "dark_oak_planks",
         "oak_planks", "spruce_planks", "acacia_planks", "mangrove_planks",
         "cherry_planks", "bamboo_planks", "crimson_planks", "warped_planks",
-        "nether_bricks"
+        "nether_bricks", "pale_oak_planks"
       ]
     }],
     "skinProperties": [{
@@ -1144,6 +1179,9 @@
       "skinsA": [
         "lantern", "soul_lantern"
       ]
+    }],
+    "vtfLocation" : [{
+      "all" : "block/"
     }],
     "skinProperties" : [{
       "skinA" : [{
@@ -1511,8 +1549,35 @@
     "skinProperties": [{
       "skinA": [{
         "surfaceprop": "Slime",
-        "alphatest": "1",
-        "nocull": "0"
+        "nocull": "1",
+        "vertexalpha": "1"
+      }]
+    }]
+  },
+  {
+    "modelname": "Glowstone",
+    "type": "staticprop",
+    "body": "BlockTemplate",
+    "cdmaterials": "Glowstone",
+    "sequence": [{
+      "idle": "BlockTemplate"
+    }],
+    "surfaceprop": "Glass",
+    "collisionmodel": "BlockTemplate",
+    "collisionOptions" : [
+      "$automass",
+      "$concave"
+    ],
+    "textureGroup": [{
+      "skinsA": [
+        "glowstone", "glowstone"
+      ]
+    }],
+    "skinProperties": [{
+      "skinA": [{
+        "surfaceprop": "Glass",
+        "nocull": "1",
+        "selfillum": "1"
       }]
     }]
   },
@@ -1546,11 +1611,236 @@
     "vtfLocation" : [{
       "lectern" : "entity/uvmap/"
     }],
-    "UVMap" : "lectern",
     "makeUVMap" : [{
       "lectern" : [
         "block/lectern_base:0px,0px", "block/lectern_front:16px,0px", "block/lectern_sides:0px,16px", "block/lectern_top:16px,16px"
       ]
+    }]
+  },
+  {
+    "modelname": "Bed",
+    "type": "staticprop",
+    "body": "Bed",
+    "cdmaterials": "Bed",
+    "sequence": [{
+      "idle": "Bed"
+    }],
+    "surfaceprop": "Rubbertire",
+    "collisionmodel": "Bed_collision",
+    "collisionOptions" : [
+      "$automass",
+      "$concave"
+    ],
+    "textureGroup": [{
+      "skinsA": [
+        "red", "black", "blue", "brown", "cyan", "gray", "green", "light_blue", "light_gray", "lime", "magenta", "orange", "pink", "purple", "white", "yellow"
+      ]
+    }],
+    "skinProperties": [{
+      "skinA": [{
+        "surfaceprop": "Rubbertire"
+      }]
+    }],
+    "vtfLocation" : [{
+      "all" : "entity/bed/"
+    }]
+  },
+  {
+    "modelname": "Chain",
+    "type": "staticprop",
+    "body": "Chain",
+    "cdmaterials": "Chain",
+    "sequence": [{
+      "idle": "Chain"
+    }],
+    "surfaceprop": "Metal",
+    "collisionmodel": "Chain_collision",
+    "collisionOptions" : [
+      "$automass",
+      "$concave"
+    ],
+    "textureGroup": [{
+      "skinsA": [
+        "chain"
+      ]
+    }],
+    "skinProperties": [{
+      "skinA": [{
+        "surfaceprop": "Metal",
+        "nocull": "1",
+        "alphatest": "1"
+      }]
+    }]
+  },
+  {
+    "modelname": "candle1",
+    "type": "staticprop",
+    "body": "candle1",
+    "cdmaterials": "Candle",
+    "sequence": [{
+      "idle": "candle1"
+    }],
+    "surfaceprop": "none",
+    "collisionmodel": "candle1_collision",
+    "collisionOptions" : [
+      "$automass",
+      "$concave"
+    ],
+    "textureGroup": [{
+      "skinsA": [
+        "candle", "black_candle", "blue_candle", "brown_candle",
+        "cyan_candle", "gray_candle", "green_candle", "light_blue_candle",
+        "light_gray_candle", "lime_candle", "magenta_candle", "orange_candle",
+        "pink_candle", "purple_candle", "red_candle", "white_candle", "yellow_candle"
+      ]
+    }],
+    "skinProperties": [{
+      "skinA": [{
+        "surfaceprop": "none",
+        "nocull": "1"
+      }]
+    }]
+  },
+  {
+    "modelname": "candle2",
+    "type": "staticprop",
+    "body": "candle2",
+    "cdmaterials": "Candle",
+    "sequence": [{
+      "idle": "candle2"
+    }],
+    "surfaceprop": "none",
+    "collisionmodel": "candle2_collision",
+    "collisionOptions" : [
+      "$automass",
+      "$concave"
+    ],
+    "textureGroup": [{
+      "skinsA": [
+        "candle", "black_candle", "blue_candle", "brown_candle",
+        "cyan_candle", "gray_candle", "green_candle", "light_blue_candle",
+        "light_gray_candle", "lime_candle", "magenta_candle", "orange_candle",
+        "pink_candle", "purple_candle", "red_candle", "white_candle", "yellow_candle"
+      ]
+    }],
+    "skinProperties": [{
+      "skinA": [{
+        "surfaceprop": "none",
+        "nocull": "1"
+      }]
+    }]
+  },
+  {
+    "modelname": "candle3",
+    "type": "staticprop",
+    "body": "candle3",
+    "cdmaterials": "Candle",
+    "sequence": [{
+      "idle": "candle3"
+    }],
+    "surfaceprop": "none",
+    "collisionmodel": "candle3_collision",
+    "collisionOptions" : [
+      "$automass",
+      "$concave"
+    ],
+    "textureGroup": [{
+      "skinsA": [
+        "candle", "black_candle", "blue_candle", "brown_candle",
+        "cyan_candle", "gray_candle", "green_candle", "light_blue_candle",
+        "light_gray_candle", "lime_candle", "magenta_candle", "orange_candle",
+        "pink_candle", "purple_candle", "red_candle", "white_candle", "yellow_candle"
+      ]
+    }],
+    "skinProperties": [{
+      "skinA": [{
+        "surfaceprop": "none",
+        "nocull": "1"
+      }]
+    }]
+  },
+  {
+    "modelname": "candle4",
+    "type": "staticprop",
+    "body": "candle4",
+    "cdmaterials": "Candle",
+    "sequence": [{
+      "idle": "candle4"
+    }],
+    "surfaceprop": "none",
+    "collisionmodel": "candle4_collision",
+    "collisionOptions" : [
+      "$automass",
+      "$concave"
+    ],
+    "textureGroup": [{
+      "skinsA": [
+        "candle", "black_candle", "blue_candle", "brown_candle",
+        "cyan_candle", "gray_candle", "green_candle", "light_blue_candle",
+        "light_gray_candle", "lime_candle", "magenta_candle", "orange_candle",
+        "pink_candle", "purple_candle", "red_candle", "white_candle", "yellow_candle"
+      ]
+    }],
+    "skinProperties": [{
+      "skinA": [{
+        "surfaceprop": "none",
+        "nocull": "1"
+      }]
+    }]
+  },
+  {
+    "modelname": "stairwedge",
+    "type": "staticprop",
+    "body": "stairwedge",
+    "cdmaterials": "stairwedge",
+    "sequence": [{
+      "idle": "stairwedge"
+    }],
+    "surfaceprop": "none",
+    "collisionmodel": "stairwedge",
+    "collisionOptions" : [
+      "$automass",
+      "$concave"
+    ],
+    "textureGroup": [{
+      "skinsA": [
+        "air"
+      ]
+    }],
+    "skinProperties": [{
+      "skinA": [{
+        "surfaceprop": "none",
+        "alphatest": "1"
+      }]
+    }]
+  },
+  {
+    "modelname": "lever",
+    "type": "staticprop",
+    "body": "lever",
+    "cdmaterials": "Lever",
+    "sequence": [{
+      "idle": "lever"
+    }],
+    "surfaceprop": "none",
+    "collisionmodel": "lever_collision",
+    "collisionOptions" : [
+      "$automass",
+      "$concave"
+    ],
+    "textureGroup": [{
+      "skinsA": [
+        "cobblestone"
+      ],
+      "skinsB": [
+        "lever"
+      ]
+    }],
+    "skinProperties": [{
+      "skinA": [{
+        "surfaceprop": "none",
+        "nocull": "0"
+      }]
     }]
   }
 ]

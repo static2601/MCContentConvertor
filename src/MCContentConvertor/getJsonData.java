@@ -20,6 +20,7 @@ public class getJsonData {
     public String cdmaterials;
     public String sequence;
     public String surfaceprop;
+    public String selfillum;
     public String collisionModel;
 
     /** special location of vtf. block/ = "" (default, not necessary for json), entity = entity/, etc.
@@ -31,16 +32,19 @@ public class getJsonData {
     public getJsonData() throws IOException, ParseException {
         // parsing file "JSONExample.json"
         JSONArray obj = (JSONArray) new JSONParser().parse(
-                new FileReader("src/MCContentConvertor/ModelData.json"));
+                new FileReader("Assets/ModelData.json"));
+                //new FileReader("src/MCContentConvertor/ModelData.json"));
         modelData.add(obj);
     }
     public void setIndex(int index) {
         this.index = index;
     }
+
     public getJsonData(int index) throws IOException, ParseException {
         this.index = index;
         JSONArray obj = (JSONArray) new JSONParser().parse(
-                new FileReader("src/MCContentConvertor/ModelData.json"));
+                new FileReader("Assets/ModelData.json"));
+                //new FileReader("src/MCContentConvertor/ModelData.json"));
         this.modelData.add(obj);
         getSkinPropSkinAProps(index);
 
@@ -50,49 +54,50 @@ public class getJsonData {
         this.cdmaterials = getObjString("cdmaterials");
         this.sequence = getObjString("sequence");
         this.surfaceprop = getObjString("surfaceprop");
+        //this.selfillum = getObjString("selfillum");
         this.collisionModel = getObjString("collisionmodel");
         //this.vtfLocation = getVtfLocation("vtfLocation");
     }
     public String getModelName(int index) {
-        JSONArray qc = this.modelData.get(0);
+        JSONArray qc = this.modelData.getFirst();
         JSONObject jqc = (JSONObject) qc.get(index);
         return jqc.get("modelname").toString();
     }
     public String getModelType(int index) {
-        JSONArray qc = this.modelData.get(0);
+        JSONArray qc = this.modelData.getFirst();
         JSONObject jqc = (JSONObject) qc.get(index);
         return jqc.get("type").toString();
     }
     public String getModelBody(int index) {
-        JSONArray qc = this.modelData.get(0);
+        JSONArray qc = this.modelData.getFirst();
         JSONObject jqc = (JSONObject) qc.get(index);
         return jqc.get("body").toString();
     }
     public String getModelcdMaterials(int index) {
-        JSONArray qc = this.modelData.get(0);
+        JSONArray qc = this.modelData.getFirst();
         JSONObject jqc = (JSONObject) qc.get(index);
         return jqc.get("cdmaterials").toString();
     }
     public String[] getModelSequence(int index) {
-        JSONArray qc = this.modelData.get(0);
+        JSONArray qc = this.modelData.getFirst();
         JSONObject jqc = (JSONObject) qc.get(index);
         JSONArray jarr = (JSONArray) jqc.get("sequence");
-        JSONObject seq = (JSONObject) jarr.get(0);
+        JSONObject seq = (JSONObject) jarr.getFirst();
         Object[] objArr = seq.keySet().toArray();
         return new String[]{objArr[0].toString(), (String) seq.get(objArr[0])};
     }
     public String getModelSurfaceProp(int index) {
-        JSONArray qc = this.modelData.get(0);
+        JSONArray qc = this.modelData.getFirst();
         JSONObject jqc = (JSONObject) qc.get(index);
         return jqc.get("surfaceprop").toString();
     }
     public String getColisionModel(int index) {
-        JSONArray qc = this.modelData.get(0);
+        JSONArray qc = this.modelData.getFirst();
         JSONObject jqc = (JSONObject) qc.get(index);
         return jqc.get("collisionmodel").toString();
     }
     public String[] getCollisionOptions(int index) {
-        JSONArray qc = this.modelData.get(0);
+        JSONArray qc = this.modelData.getFirst();
         JSONObject jqc = (JSONObject) qc.get(index);
         JSONArray jarr = (JSONArray) jqc.get("collisionOptions");
         Object[] objarr = jarr.toArray();
@@ -103,10 +108,10 @@ public class getJsonData {
         return strarr;
     }
     public String[] getModelSkinsA(int index) {
-        JSONArray qc = this.modelData.get(0);
+        JSONArray qc = this.modelData.getFirst();
         JSONObject jqc = (JSONObject) qc.get(index);
         JSONArray jarr = (JSONArray) jqc.get("textureGroup");
-        JSONObject tg = (JSONObject) jarr.get(0);
+        JSONObject tg = (JSONObject) jarr.getFirst();
         JSONArray sArr = (JSONArray) tg.get("skinsA");
         Object[] objarr = sArr.toArray();
         String[] strarr = new String[objarr.length];
@@ -116,10 +121,10 @@ public class getJsonData {
         return strarr;
     }
     public String[] getModelSkinsB(int index) {
-        JSONArray qc = this.modelData.get(0);
+        JSONArray qc = this.modelData.getFirst();
         JSONObject jqc = (JSONObject) qc.get(index);
         JSONArray jarr = (JSONArray) jqc.get("textureGroup");
-        JSONObject tg = (JSONObject) jarr.get(0);
+        JSONObject tg = (JSONObject) jarr.getFirst();
         JSONArray sArr = (JSONArray) tg.get("skinsB");
         //System.out.println("sArr: " + sArr);
         if(sArr != null) {
@@ -133,7 +138,7 @@ public class getJsonData {
         else return new String[0];
     }
     public String getModelUVMap(int index) {
-        JSONArray qc = this.modelData.get(0);
+        JSONArray qc = this.modelData.getFirst();
         JSONObject jqc = (JSONObject) qc.get(index);
         if(jqc.get("UVMap") != null)
             return jqc.get("UVMap").toString();
@@ -171,7 +176,7 @@ public class getJsonData {
 //        return new JSONObject();
 //    }
     public int getIndexByModelName(String name) {
-        JSONArray qc = this.modelData.get(0);
+        JSONArray qc = this.modelData.getFirst();
         for(int i = 0; i < qc.size(); i++) {
             JSONObject jqc = (JSONObject) qc.get(i);
             String jname = (String) jqc.get("modelname");
@@ -261,7 +266,7 @@ public class getJsonData {
 //    }
     //private int modelIndex = 0;
     public int getIndexByName(String name) {
-        JSONArray qc = this.modelData.get(0);
+        JSONArray qc = this.modelData.getFirst();
         for(int i = 0; i < qc.size(); i++) {
             JSONObject jqc = (JSONObject) qc.get(i);
             String jname = (String) jqc.get("modelname");
@@ -272,11 +277,13 @@ public class getJsonData {
         return -1;
     }
     public JSONObject getJsonArrObjs(String name, int index) {
-        JSONArray qc = this.modelData.get(0);
+        JSONArray qc = this.modelData.getFirst();
+        //System.out.println("qc.get(index): "+ qc.get(index));
         JSONObject jqc = (JSONObject) qc.get(index);
+        //System.out.println("jqc: "+ jqc);
         if(jqc.containsKey(name)) {
             JSONArray skinPropsArr = (JSONArray) jqc.get(name);
-            JSONObject skinProps = (JSONObject) skinPropsArr.get(0);
+            JSONObject skinProps = (JSONObject) skinPropsArr.getFirst();
             return skinProps;
         }
         return null;
@@ -297,17 +304,36 @@ public class getJsonData {
 //        //aarr.add(row2.toArray());
 //        return aarr;
 //    }
-    public ArrayList<Object[]> getMakeUVMapValues3(int index){
-        JSONObject getjsra = getJsonArrObjs("makeUVMap", index);
-        if(getjsra != null) {
-            ArrayList<Object[]> aarr = new ArrayList<>();
-            Object[] jar = getjsra.keySet().toArray();
+    /// check each object in modelData, return those with makeUVMap's array of objects
+    /// the instructions on how to make the UV Map for the model, else return empty arraylist
+    public ArrayList<String[]> getMakeUVMapValues3(int index){
+        JSONObject makeUVMapObj = getJsonArrObjs("makeUVMap", index);
+        if(makeUVMapObj != null) {
+            System.out.println("makeUVMapObj: "+ makeUVMapObj);
+            ArrayList<String[]> aarr = new ArrayList<>();
 
-            for (int i = 0; i < jar.length; i++) {
+//            makeUVMapObj.keySet().forEach(s -> {
+//                jKeyset.add(s.toString());
+//                System.out.println(s);
+//            });
+            Object[] jKeyset = makeUVMapObj.keySet().toArray();
+            System.out.println("jKeyset: "+ jKeyset);
+            for (int i = 0; i < jKeyset.length; i++) {
                 //of returned objects, get first object values
-                JSONArray row = (JSONArray) getjsra.get(jar[i]);
-                Object[] jar2 = new Object[]{jar[i], row};
-                aarr.add(jar2);
+                JSONArray row = (JSONArray) makeUVMapObj.get(jKeyset[i]);
+                //ArrayList<String> str_arr = new ArrayList<>();
+//                ArrayList<String> rows = new ArrayList<>();
+//                for (Object obj : row) {
+//                    rows.add(obj.toString());
+//                }
+                String[] str_arr = new String[]{jKeyset[i].toString(), row.toJSONString()};
+                //str_arr.add(jKeyset.get(i));
+                //str_arr.add(String.valueOf(row));
+                //ArrayList<String[]> jar2 = new ArrayList<>();//{jKeyset.get(i), row};
+                //jar2.add(str_arr);
+                //Object[] jar2 = new Object[]{jKeyset.get(i), row};
+                aarr.add(str_arr);
+                System.out.println("str_arr: "+ Arrays.toString(str_arr));
             }
             return aarr;
         }
@@ -324,6 +350,7 @@ public class getJsonData {
         public String alphatest;
         public String color;
         public String surfaceprop;
+        public String selfillum;
         public String animatedTextureVar;
         public String animatedTextureFrameNumVar;
         public String animatedTextureFrameRate;
@@ -344,17 +371,17 @@ public class getJsonData {
 //    }
 
     public void getSkinPropSkinAProps(int index) {
-        JSONArray qc = modelData.get(0);
+        JSONArray qc = modelData.getFirst();
         JSONObject jqc = (JSONObject) qc.get(index);
 
         if(jqc.containsKey("skinProperties")) {
             JSONArray arr_sp = (JSONArray) jqc.get("skinProperties");
-            JSONObject jo_sp = (JSONObject) arr_sp.get(0);
+            JSONObject jo_sp = (JSONObject) arr_sp.getFirst();
             System.out.println("jo_sp keyset: "+jo_sp.keySet());
 
             if (jo_sp.containsKey("skinA")) {
                 JSONArray arr_skinA = (JSONArray) jo_sp.get("skinA");
-                JSONObject jo_skinA = (JSONObject) arr_skinA.get(0);
+                JSONObject jo_skinA = (JSONObject) arr_skinA.getFirst();
 
                 if (jo_skinA.containsKey("nocull")) {
                     this.nocull = jo_skinA.get("nocull").toString();
@@ -368,6 +395,9 @@ public class getJsonData {
                 if (jo_skinA.containsKey("surfaceprop")) {
                     this.surfaceprop = jo_skinA.get("surfaceprop").toString();
                 }
+                if (jo_skinA.containsKey("selfillum")) {
+                    this.selfillum = jo_skinA.get("selfillum").toString();
+                }
                 if (jo_skinA.containsKey("animatedTextureVar")) {
                     this.animatedTextureVar = jo_skinA.get("animatedTextureVar").toString();
                 }
@@ -380,7 +410,7 @@ public class getJsonData {
             }
             if (jo_sp.containsKey("perSkin")) {
                 JSONArray arr_perSkin = (JSONArray) jo_sp.get("perSkin");
-                JSONObject jo_perSkin = (JSONObject) arr_perSkin.get(0);
+                JSONObject jo_perSkin = (JSONObject) arr_perSkin.getFirst();
                 Object[] textures = jo_perSkin.keySet().toArray();
 
                 for(int i=0;i<textures.length;i++) {
@@ -388,7 +418,7 @@ public class getJsonData {
 
                     perSkinProperties perSkins = new perSkinProperties();
                     JSONArray arr_textures = (JSONArray) jo_perSkin.get(textures[i].toString());
-                    JSONObject jo_textures = (JSONObject) arr_textures.get(0);
+                    JSONObject jo_textures = (JSONObject) arr_textures.getFirst();
 
                     perSkins.texture = textures[i].toString();
 
@@ -403,6 +433,9 @@ public class getJsonData {
                     }
                     if (jo_textures.containsKey("surfaceprop")) {
                         perSkins.surfaceprop = jo_textures.get("surfaceprop").toString();
+                    }
+                    if (jo_textures.containsKey("selfillum")) {
+                        perSkins.selfillum = jo_textures.get("selfillum").toString();
                     }
                     if (jo_textures.containsKey("animatedTextureVar")) {
                         perSkins.animatedTextureVar = jo_textures.get("animatedTextureVar").toString();
@@ -419,7 +452,7 @@ public class getJsonData {
         }
     }
     public String getObjString(String name) {
-        JSONArray qc = this.modelData.get(0);
+        JSONArray qc = this.modelData.getFirst();
         JSONObject jobj = (JSONObject) qc.get(this.index);
 
         if(jobj.containsKey(name)) {
@@ -429,13 +462,13 @@ public class getJsonData {
         return "";
     }
     public String getVtfLocation(String name) {
-        JSONArray qc = this.modelData.get(0);
+        JSONArray qc = this.modelData.getFirst();
         JSONObject jobj = (JSONObject) qc.get(this.index);
 
         // name of texture
         if(jobj.containsKey("vtfLocation")) {
             JSONArray vtfLoc = (JSONArray) jobj.get("vtfLocation");
-            JSONObject vtfLocObj = (JSONObject) vtfLoc.get(0);
+            JSONObject vtfLocObj = (JSONObject) vtfLoc.getFirst();
             //System.out.println("vtfLocObj: "+vtfLocObj);
             if (vtfLocObj.containsKey(name)) {
                 return vtfLocObj.get(name).toString();
@@ -444,12 +477,12 @@ public class getJsonData {
         return "";
     }
     public String[] getVtfLocations(int index) {
-        JSONArray qc = this.modelData.get(0);
+        JSONArray qc = this.modelData.getFirst();
         JSONObject jobj = (JSONObject) qc.get(index);
 
         if(jobj.containsKey("vtfLocation")) {
             JSONArray vtfLoc = (JSONArray) jobj.get("vtfLocation");
-            JSONObject vtfLocObj = (JSONObject) vtfLoc.get(0);
+            JSONObject vtfLocObj = (JSONObject) vtfLoc.getFirst();
             //System.out.println("vtfLocObj: "+vtfLocObj);
             Object[] keys = vtfLocObj.keySet().toArray();
             System.out.println(Arrays.toString(keys) + "keys <----------------------------------i: "+index);
