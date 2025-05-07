@@ -340,7 +340,7 @@ public class GUIStart {
             if (tempFolder.exists()) {
 
                 if (!tempFolder.getCanonicalPath().startsWith(base.getCanonicalPath())) {
-                    throw new SecurityException("Unsafe delete path: " + toDelete);
+                    throw new SecurityException("Unsafe delete path: " + tempFolder);
 
                 } else {
 

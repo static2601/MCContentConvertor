@@ -18,29 +18,18 @@ import java.util.jar.JarFile;
 import static MCContentConvertor.GUIStart.*;
 import static MCContentConvertor.Pathnames.*;
 
-
 public class TextureGetter {
 
 	public static GUIStart guiStartRef;
-	static QCFunctions qc = new QCFunctions();
+	private static QCFunctions qc = new QCFunctions();
 	private getSettingsData settings;
-	//private static int fileCount = 0;
-	public static ArrayList<String> animatedVTFs = new ArrayList<String>();
-	//String VTFsMatDir = "materials/"+ texturePack +"/";
-	//String VTFsMatDir = gameDir + "/materials/"+ texturePack +"/";
-	//String VTFsMatDir = OUTPUTDIR + "/materials/"+ TEXTUREPACK +"/";
-    static String VTFsMatDir = VTFSMATDIR + "/materials/"+ TEXTUREPACK +"/";
+	private static ArrayList<String> animatedVTFs = new ArrayList<String>();
+	private static String VTFsMatDir = VTFSMATDIR + "/materials/"+ TEXTUREPACK +"/";
 
 	public TextureGetter() throws IOException, ParseException {
 		this.settings = new getSettingsData();
 	}
-	/**
-	 * Extract pngs from jar
-	 * @param jarFile
-	 * @param destDir
-	 * @return True on success
-	 * @throws IOException
-	 */
+
 	public boolean ExtractJar(String jarFile, String destDir, boolean base) throws IOException {
 		
 		//print to GUI Extracting Textures...

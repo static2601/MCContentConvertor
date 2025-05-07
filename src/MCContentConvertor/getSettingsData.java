@@ -67,21 +67,21 @@ public class getSettingsData {
         File texturePacksDir = new File(UserDir + "\\Assets\\TexturePacks");
         String[] texture_packs = texturePacksDir.list();
 
-        assert texture_packs != null;
-        for(String tp : texture_packs) {
-            if (tp.endsWith(".zip")) {
-                // if file.zip is not in pack...
-                if (!checkInPack(tp, this.texturePacks)) {
-                    String name = tp.split(".zip")[0];
-                    this.texturePacks.put(encFn(name), tp);
-                }
-                //TODO reverse check if zip still exists and update
-            }else
-            if (tp.endsWith(".jar")) {
-                // if file.zip is not in pack...
-                if (!checkInPack(tp, this.texturePacks)) {
-                    String name = tp.split(".jar")[0];
-                    this.texturePacks.put(encFn(name), tp);
+        if(texture_packs != null) {
+            for (String tp : texture_packs) {
+                if (tp.endsWith(".zip")) {
+                    // if file.zip is not in pack...
+                    if (!checkInPack(tp, this.texturePacks)) {
+                        String name = tp.split(".zip")[0];
+                        this.texturePacks.put(encFn(name), tp);
+                    }
+                    //TODO reverse check if zip still exists and update
+                } else if (tp.endsWith(".jar")) {
+                    // if file.zip is not in pack...
+                    if (!checkInPack(tp, this.texturePacks)) {
+                        String name = tp.split(".jar")[0];
+                        this.texturePacks.put(encFn(name), tp);
+                    }
                 }
             }
         }
