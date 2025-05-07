@@ -90,6 +90,7 @@ public class GUIStart {
         settings.guiStartRef = this;
         // call set combobox for textures since get texturepack
         // files doesnt return until after all has ran.
+        if(!DEBUG) textures_custom_button.setVisible(false);
         settings.setComboBarThing();
         JFrame frame = new JFrame();
         frame.setContentPane(jPanel1);
@@ -97,7 +98,7 @@ public class GUIStart {
 
         frame.setTitle("Minecraft Content 2 Source Convertor");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.setSize(600, 400);
+        frame.setSize(600, 420);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
@@ -277,17 +278,22 @@ public class GUIStart {
     }
 
     public void start_extraction() throws IOException, ParseException, InterruptedException {
+
+        //TODO return with error, suggest checking file paths
+        if (Objects.equals(jar_selected, "")
+                || Objects.equals(gameDir_selected, "")) {
+            progress_bar_label.setText("Check that your Paths are correct.");
+            System.out.println("Check that your Paths are correct.");
+            return;
+        }
+
         // disable extraction button
         startExtractionButton.setEnabled(false);
         startExtractionButton.setVisible(false);
         materials_output_label.setText("Status:");
         materials_output_label.setHorizontalAlignment(SwingConstants.CENTER);
         models_output_label.setVisible(false);
-
-        //TODO return with error, suggest checking file paths
-        if (jar_selected == null) return;
-        if (output_selected == null) return;
-        if (gameDir_selected == null) return;
+        progress_bar_label.setText("");
 
         GAMEDIR = this.gameDir_selected;
         TEXTUREPACK = this.texturePack_selected;

@@ -36,5 +36,5 @@ public interface Pathnames {
 
 	String BATDIR = TEMPTEXTURES;
 
-	boolean DEBUG = false;
+	boolean DEBUG = true;
 }
