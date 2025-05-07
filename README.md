@@ -1,6 +1,6 @@
 MC Content Convertor extracts all textures from the Minecraft jar and converts to vtf and vmt files
 for use in Source games like Team Fortress 2, GarrysMod and Counter Strike. This is mostly for making
-the textures needed for Soucecraft, a Minecraft world convertor originally created by Garten, but could
+the textures needed for Sourcecraft, a Minecraft world convertor originally created by Garten, but could
 be used for any Source project.
 
 This is a work in progress, I have just recently gotten it to a point where I can make a release.
