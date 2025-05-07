@@ -1,5 +1,6 @@
 package MCContentConvertor;
 
+import org.apache.commons.io.FileUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
@@ -325,27 +326,39 @@ public class GUIStart {
             makeModels();
         }
     }
-
     public void getTextures() throws IOException, ParseException {
 
         // delete textures folder to start
         //TODO delete textures folder before run
-        //File file = new File(USERDIR + "/textures/pngs/");
-        File tempFolder = new File(TEMPTEXTURES);
-        if (tempFolder.exists()) {
-            // delete it and remake it
-            System.out.println("Simulate deleting texture folder contents: delete "+ tempFolder);
-            boolean makeTemp = tempFolder.mkdirs();
-            System.out.println("Making temporary textures folder: "+ makeTemp);
-            System.out.println("temporary folder location: "+ tempFolder);
-        }
-        else {
-            // make it
-            boolean makeTemp = tempFolder.mkdirs();
-            System.out.println("Making temporary textures folder: "+ makeTemp);
-            System.out.println("temporary folder location: "+ tempFolder);
-        }
 
+        // TEMPTEXTURES = System.getProperty("user.dir") + TEXTURESTMP
+        // TEXTURESTMP = "textures-tmp"
+        File tempFolder = new File(TEMPTEXTURES);
+        File base = new File(System.getProperty("user.dir"));
+        File toDelete = new File(base, TEXTURESTMP);
+        if(toDelete.equals(tempFolder)) {
+            if (tempFolder.exists()) {
+
+                if (!tempFolder.getCanonicalPath().startsWith(base.getCanonicalPath())) {
+                    throw new SecurityException("Unsafe delete path: " + toDelete);
+
+                } else {
+
+                    // delete it and remake it
+                    //System.out.println("Simulate deleting texture folder contents: delete " + tempFolder);
+                    FileUtils.deleteDirectory(tempFolder);
+                    boolean makeTemp = tempFolder.mkdirs();
+                    System.out.println("Making temporary textures folder: " + makeTemp);
+                    System.out.println("temporary folder location: " + tempFolder);
+                }
+            } else {
+                // make it
+                boolean makeTemp = tempFolder.mkdirs();
+                System.out.println("Making temporary textures folder: " + makeTemp);
+                System.out.println("temporary folder location: " + tempFolder);
+            }
+        }
+        else throw new SecurityException("Temporary paths do not match!: " + toDelete);
 
         getJsonData modelData = new getJsonData();
         JSONArray qc = modelData.modelData.getFirst();
@@ -496,7 +509,7 @@ public class GUIStart {
         grayTextures.add("block/fern");
 
         for(int i=0; i<grayTextures.size(); i++) {
-            String textures_path = "textures/pngs/minecraft_original/assets/minecraft/textures/";
+            String textures_path = TEXTURESTMP + "/pngs/minecraft_original/assets/minecraft/textures/";
             colorizeImages(textures_path + grayTextures.get(i) + ".png");
         }
         // animated/generated
@@ -505,7 +518,7 @@ public class GUIStart {
         grayTextures.add("water_flow");
 
         for(int i=0; i<grayTextures.size(); i++) {
-            String textures_path = "textures/pngs/minecraft_original/animated/generated/";
+            String textures_path = TEXTURESTMP + "/pngs/minecraft_original/animated/generated/";
             File filename = new File(USERDIR + "\\" + textures_path);
             for(String file : Objects.requireNonNull(filename.list())) {
                 if (file.startsWith(grayTextures.get(i))) {
@@ -648,7 +661,7 @@ public class GUIStart {
         System.out.println(dash+"Making QC Files and Compiling Models..."+dash);
 
         // make QCs folder in textures(temp) folder
-        String qcPath = USERDIR + "\\textures\\QCs\\";
+        String qcPath = TEMPTEXTURES + "\\QCs\\";
         File qcPathFile = new File(qcPath+"SMDs\\");
         if(!qcPathFile.exists()) {
             qcPathFile.mkdirs();
@@ -656,7 +669,7 @@ public class GUIStart {
 
         // copy SMDs from Assets to new QCs folder
         File copy_from = new File(USERDIR + "/Assets/SMDs/");
-        File copy_to = new File(USERDIR + "/textures/QCs/SMDs");
+        File copy_to = new File(TEMPTEXTURES + "/QCs/SMDs");
         System.out.println("copy_from: "+ copy_from + ", copy_to: "+ copy_to);
 
         String[] files = copy_from.list();
@@ -712,11 +725,12 @@ public class GUIStart {
     }
 
     public void setOutputLabels() {
-        File output = new File(this.output_selected);
+        File output = new File(this.gameDir_selected);
         String out;
         out = output.toString().replace(output.getParent(), "").replace("\\", "/");
         String materials = "Materials output -> ...";
         String models = "Models output -> ...";
+        // probably not needed if game dir is the only option...
         this.materials_output_label.setText(materials + out + "/materials/"+ this.texturePack_selected + "/");
         this.models_output_label.setText(models + out + "/models/props/"+ this.texturePack_selected + "/");
     }
@@ -784,27 +798,4 @@ public class GUIStart {
             progress_bar_label.setText(s + str);
         }
     }
-//    public static void deleteDirectory(File directory) {
-//
-//        // if the file is directory or not
-//        if(directory.isDirectory()) {
-//            File[] files = directory.listFiles();
-//
-//            // if the directory contains any file
-//            if(files != null) {
-//                for(File file : files) {
-//
-//                    // recursive call if the subdirectory is non-empty
-//                    deleteDirectory(file);
-//                }
-//            }
-//        }
-//
-//        if(directory.delete()) {
-//            System.out.println(directory + " is deleted");
-//        }
-//        else {
-//            System.out.println("Directory not deleted");
-//        }
-//    }
 }

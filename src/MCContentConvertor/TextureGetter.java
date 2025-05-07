@@ -70,7 +70,6 @@ public class TextureGetter {
 				if(str2.endsWith("assets/minecraft/textures/block/")
 				|| str2.contains("assets/minecraft/textures/entity/")) {
 
-
 					if(!f.exists())
 						f.getParentFile().mkdirs();
 
@@ -108,7 +107,7 @@ public class TextureGetter {
 		// Path of the file where data is to be copied
 
 		copyFile(new File(USERDIR + "/Assets/Textures/air.png"),
-                new File(USERDIR + "/textures/pngs/minecraft_original/assets/minecraft/textures/block/air.png"));
+                new File(TEMPTEXTURES + "/pngs/minecraft_original/assets/minecraft/textures/block/air.png"));
 		
 		//print to GUI Processing label
 		guiStartRef.set_progress_label("Extracting "+sBase+"Textures...Done!", true, "");

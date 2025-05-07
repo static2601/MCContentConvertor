@@ -16,7 +16,7 @@ public class makeUVMap {
 
     //TODO maybe add to pathnames as constants
     public static final String PNGs =
-            USERDIR + "\\textures\\pngs";
+            TEMPTEXTURES + "\\pngs";
     public static final String PNGs2 =
             "\\assets\\minecraft\\textures\\";
     public final String PNGsFolder =

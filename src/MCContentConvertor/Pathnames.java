@@ -10,8 +10,11 @@ public interface Pathnames {
 
 	String dash = "\n- - - - - - - - - - - - - - - - - - - -\n";
 
+	///  name of just the temporary textures folder
+	String TEXTURESTMP = "textures-tmp";
+
 	/// path to our temporary 'textures' folder, will be deleted on start
-	String TEMPTEXTURES = USERDIR + "\\textures";
+	String TEMPTEXTURES = USERDIR + "\\" + TEXTURESTMP;
 
 	String VTFCMDEXE = USERDIR + "\\Assets\\VTFEdit\\bin\\x64\\VTFCmd.exe";
 

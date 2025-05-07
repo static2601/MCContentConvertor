@@ -110,7 +110,6 @@ public class ColorizeImage {
                 //if(colorPixels(xy)) {
                // color.decode()
 
-
                 //Color color3 = new Color(color2.getRGB(), true);
                 Color pixelColor = new Color(image.getRGB(x, y), true);
                 int r = (pixelColor.getRed() + color.getRed()) / 2;
@@ -171,7 +170,6 @@ public class ColorizeImage {
         jArr.forEach(jobj ->
                 pixelData.add((JSONObject) jobj)
         );
-
     }
 
     public JSONObject getDataByTexturename(String textureName) {
@@ -231,6 +229,5 @@ public class ColorizeImage {
         }
         System.out.println("pixels_array.size(): "+ pixels_array.size());
         return pixels_array;
-
     }
 }

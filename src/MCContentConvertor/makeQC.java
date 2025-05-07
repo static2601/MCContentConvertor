@@ -300,14 +300,7 @@ public class makeQC {
     //ArrayList<String> failedCompiles = new ArrayList<>();
     public int CompileModel(String QCPath, String QCName) throws IOException, InterruptedException {
 
-        //will need to use other paths. eg css, garrysmod, etc
-        //String gameFolder = "D:/Steam/steamapps/common/Team Fortress 2/tf";
-        //String gameFolder = tfDir;
-        //String gameFolder = studioMdlPath;
-        //String binFolder = gameFolder.replace("tf", "bin/");
         String studioMdlPath = new File(GAMEDIR).getParent() + "/bin" + "/studiomdl";
-        //String gameFolder
-        //gameDir += "studiomdl";
         int code = 1;
         //Create bat file
         if(PrepareCompiler(studioMdlPath, GAMEDIR, QCName, QCPath)) {
@@ -322,13 +315,9 @@ public class makeQC {
 
             if(code > 0) {
                 System.out.println("ERROR: p/waitFor returned " + code);
-                //GUIStart.failedCompiles.add(QCPath + QCName);
-                //process.destroy();
-                //System.exit();
             }
             else {
                 System.out.println("finished compiling model: "+ QCPath + QCName);
-                //process.destroy();
             }
 
             //System.out.println();//needs to wait for each to
@@ -351,7 +340,6 @@ public class makeQC {
 
     public void WriteVMTFile(String toWrite, String matPath, String skin) throws IOException {
 
-        //String ModelMatPath = OUTPUTDIR +"/materials/"+ TEXTUREPACK +"/minecraft_prop_materials/"+ this.cdMaterials + "/";
         String ModelMatPath = GAMEDIR +"/materials/"+ TEXTUREPACK +"/minecraft_prop_materials/"+ this.cdMaterials + "/";
         // get vtf location and copy from to matPath
         // if vtfLocation is not null, get vtf from there
@@ -399,7 +387,6 @@ public class makeQC {
 
         try {
             File theDir = new File(ModelMatPath);
-            //File theDir = new File(ModelMatPath);
             if (!theDir.exists()) {
                 theDir.mkdirs();
             }
