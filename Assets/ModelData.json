@@ -1187,8 +1187,8 @@
       "skinA" : [{
         "nocull" : "1",
         "alphatest" : "1",
-        "animatedTextureVar" : "basetexture",
-        "animatedTextureFrameNumVar" : "frame",
+        "animatedTextureVar" : "$basetexture",
+        "animatedTextureFrameNumVar" : "$frame",
         "animatedTextureFrameRate" : "3"
       }]
     }]
@@ -1216,8 +1216,8 @@
       "skinA" : [{
         "nocull" : "1",
         "alphatest" : "1",
-        "animatedTextureVar" : "basetexture",
-        "animatedTextureFrameNumVar" : "frame",
+        "animatedTextureVar" : "$basetexture",
+        "animatedTextureFrameNumVar" : "$frame",
         "animatedTextureFrameRate" : "3"
       }]
     }]

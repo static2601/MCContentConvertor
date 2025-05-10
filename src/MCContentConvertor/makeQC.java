@@ -193,11 +193,11 @@ public class makeQC {
             sb.append("\t\t").append("AnimatedTexture").append("\n");
             sb.append("\t\t").append("{").append("\n");
 
-            sb.append("\t\t\t\"").append("$animatedTextureVar\" \"")
+            sb.append("\t\t\t\"").append("animatedTextureVar\" \"")
                     .append(this.animatedTextureVar).append("\"\n");
-            if(this.animatedTextureFrameNumVar != null) sb.append("\t\t\t\"").append("$animatedTextureFrameNumVar\" \"")
+            if(this.animatedTextureFrameNumVar != null) sb.append("\t\t\t\"").append("animatedTextureFrameNumVar\" \"")
                     .append(this.animatedTextureFrameNumVar).append("\"\n");
-            if(this.animatedTextureFrameRate != null) sb.append("\t\t\t\"").append("$animatedTextureFrameRate\" \"")
+            if(this.animatedTextureFrameRate != null) sb.append("\t\t\t\"").append("animatedTextureFrameRate\" \"")
                     .append(this.animatedTextureFrameRate).append("\"\n");
 
             sb.append("\t\t").append("}").append("\n");
@@ -225,11 +225,11 @@ public class makeQC {
                     sb.append("\t\t").append("AnimatedTexture").append("\n");
                     sb.append("\t\t").append("{").append("\n");
 
-                    if(prop.animatedTextureVar != null) sb.append("\t").append("\"$animatedTextureVar\" \"")
+                    if(prop.animatedTextureVar != null) sb.append("\t").append("\"animatedTextureVar\" \"")
                             .append(prop.animatedTextureVar).append("\"\n");
-                    if(prop.animatedTextureFrameNumVar != null) sb.append("\t").append("\"$animatedTextureFrameNumVar\" \"")
+                    if(prop.animatedTextureFrameNumVar != null) sb.append("\t").append("\"animatedTextureFrameNumVar\" \"")
                             .append(prop.animatedTextureFrameNumVar).append("\"\n");
-                    if(prop.animatedTextureFrameRate != null) sb.append("\t").append("\"$animatedTextureFrameRate\" \"")
+                    if(prop.animatedTextureFrameRate != null) sb.append("\t").append("\"animatedTextureFrameRate\" \"")
                             .append(prop.animatedTextureFrameRate).append("\"\n");
 
                     sb.append("\t\t").append("}").append("\n");
