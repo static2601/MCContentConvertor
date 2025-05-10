@@ -51,7 +51,7 @@ by hand. The VMTs are created with at least the basic set of properties for them
   The process: 
 
     - Open VTFEdit in ```"/Assets/VTFEdit/bin/x64/VTFEdit.exe"``` or your own. 
-    - File -> Import -> go to ```"/textures-tmp/pngs/minecraft_original/animated/generated/"``` from your install folder.
+    - File -> Import -> go to ```"/textures-tmp/vtfs2/minecraft_original/"``` from your install folder.
     - Select multiple textures from name_0 to whatever it goes to. Press OK.
     - A dialog for VTF Options will come up asking how you would like to import them. 
 
@@ -67,7 +67,7 @@ by hand. The VMTs are created with at least the basic set of properties for them
 
 
 - Uncheck Clamp, Generate Mipmaps and Generate Normals. click OK
-- In Flags, check 'Point Sample'. click Save As and save it as the same name as what you imported but without the '_xx' on the end.
+- In Flags, check 'Point Sample'. click Save As, 'Save as Type' '.vtf' and save it as the same name as what you imported but without the '_xx' on the end.
 
 - Once the textures you want animated are created, you will need to copy them to your 
 `"/game directory/materials/minecraft_original/"`
