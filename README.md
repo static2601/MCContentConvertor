@@ -69,22 +69,16 @@ by hand. The VMTs are created with at least the basic set of properties for them
 - Uncheck Clamp, Generate Mipmaps and Generate Normals. click OK
 - In Flags, check 'Point Sample'. click Save As, 'Save as Type' '.vtf' and save it as the same name as what you imported but without the '_xx' on the end.
 
-- Once the textures you want animated are created, you will need to copy them to your 
-`"/game directory/materials/minecraft_original/"`
-folder. Depending on if it's used in a model, you will also have to copy them to the 
-`"/game directory/materials/minecraft_prop_materials/<ModelName>/"` folder.
-
-You would need to do this for the following:
-- lantern and soul_lantern in `"/minecraft_prop_materials/Lantern/"`
-- kelp and kelp_plant in `"/minecraft_prop_materials/CrossModel/"`
-- seagrass, tall_seagrass_bottom and tall_seagrass_top in `"/minecraft_prop_materials/CrossModel/"`
-
-Once these are in place, generating again will overwrite them (I will soon make it pull them from the Assets folder, 
-I'll update this once I do)
+- Once the textures you want animated are created, you will need to copy them to the 
+`"/Assets/Textures/Anims/<texture_pack>/"`
+folder.
+Once these are in place, generate again will put the textures where they need to be.
 
 Animation Play rate and order still need adjusted and will be something I add in future versions. For now, you
 can adjust the play rate in the texture's VMT file under "animatedTextureFrameRate" set the number after whatever you want.
-Lower is faster. Save it. It will update live in hammer if it is a texture. If a model, you will need to close and reopen the VMF.
+Higher is faster. Save it. It will update live in hammer if it is a texture. If a model, you will need to close and reopen the VMF.
+If you want to save and prevent overwrite, when generated again, copy them in the `"/Assets/Textures/Anims/<texture_pack>/"` and they
+will be added when you generate textures again.
 
 
 
