@@ -7,7 +7,7 @@ import java.io.*;
 import java.util.ArrayList;
 
 import static MCContentConvertor.GUIStart.*;
-import static MCContentConvertor.Pathnames.DEBUG;
+import static MCContentConvertor.Pathnames.*;
 
 public class makeQC {
 
@@ -378,12 +378,26 @@ public class makeQC {
             }
         }
 
+        //TODO Lantern DOES NOT COPY from "block/" fails because block/ doenst exist
+        // only minecraft_original!!! So this has never worked and probably should
+        // be removed from model data or something.
         File from = new File(fromPath);
         // should prepend gameDir so it goes into /tf
         File to = new File(ModelMatPath + skin + ".vtf");
         System.out.println("from: "+ from);
         System.out.println("to: "+ to);
-        TextureGetter.copyFile(from, to);
+        if (TextureGetter.copyFile(from, to))
+            System.out.println("File successfully copied!");
+        else System.out.println("File failed to copy!");
+
+        // check if anim has the same vtf and copy over it
+        String filename = from.getName();
+        from = new File(ANIMTEXTEXTURES + FS + TEXTUREPACK + FS + filename);
+        System.out.println("Anim from: "+ from);
+        System.out.println("Anim to: "+ to);
+        if (TextureGetter.copyFile(from, to))
+            System.out.println("File successfully copied!");
+        else System.out.println("No file copied.");
 
         try {
             File theDir = new File(ModelMatPath);

@@ -367,8 +367,6 @@ public class GUIStart {
             //TODO either create method to extract as zip or copy zip to temp folder
             // and rename there instead of renaming in source folder
 
-            //TODO also copy SMDs to QCs folder in textures(temp) folder
-
             // first extract all textures from main textures of jar
             // will also need either specific or all textures of entities folders
             // extract all pngs to texture/pngs
@@ -454,6 +452,13 @@ public class GUIStart {
                 File copy_to = new File(GAMEDIR + "/materials/");
                 System.out.println("copy_from: "+ copy_from + ", copy_to: "+ copy_to);
                 TextureGetter.copyDirectory(copy_from.toString(), copy_to.toString());
+
+                // copy over any animated vtfs from Assets/Textures/Anims/<texturepack>
+                copy_from = new File(ANIMTEXTEXTURES + FS + TEXTUREPACK);
+                copy_to = new File(GAMEDIR + "/materials/" + TEXTUREPACK);
+                System.out.println("Anims copy_from: "+ copy_from + ", Anims copy_to: "+ copy_to);
+                TextureGetter.copyDirectory(copy_from.toString(), copy_to.toString());
+
             }
 
         } catch (IOException e2) {
@@ -519,7 +524,7 @@ public class GUIStart {
 
         for(int i=0; i<grayTextures.size(); i++) {
             String textures_path = TEXTURESTMP + "/pngs/minecraft_original/animated/generated/";
-            File filename = new File(USERDIR + "\\" + textures_path);
+            File filename = new File(USERDIR + FS + textures_path);
             for(String file : Objects.requireNonNull(filename.list())) {
                 if (file.startsWith(grayTextures.get(i))) {
                     colorizeImages(textures_path + file);

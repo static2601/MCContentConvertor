@@ -37,6 +37,8 @@ public interface Pathnames {
 	String VTFs2MatDir =
 			TEMPTEXTURES + "\\vtfs2\\minecraft_original";
 
+	String ANIMTEXTEXTURES = USERDIR + "/Assets/Textures/Anims";
+
 	String BATDIR = TEMPTEXTURES;
 
 	boolean DEBUG = false;

@@ -31,27 +31,27 @@ public class AnimVMTProps extends QCFunctions {
 		vmt("fire_1", 0, 0, 1);//same? empty
 		vmt("kelp", 0, 2, 1);
 		vmt("kelp_plant", 0, 2, 1);
-		vmt("lantern", 0, 8, 1);
+		vmt("lantern", 0, 2, 1);
 		vmt("lava_flow", 0, 3, 0);
 		vmt("lava_still", 0, 2, 0);//0-19, 19-1
 		vmt("magma", 20, 8, 0);//interp
-		vmt("nether_portal", 0, 0, 1);//nothing
+		vmt("nether_portal", 0, 10, 0);//nothing
 		vmt("prismarine", 4, 300, 0);//0,1,0,2,0,3,0,1,2,1,3,1,0,2,1,2,3,2,0,3,1 //interp
 		vmt("repeating_command_block_back", 0, 10, 0);//interp
 		vmt("repeating_command_block_conditional", 0, 10, 0);//interp
 		vmt("repeating_command_block_front", 0, 10, 0);//interp
 		vmt("repeating_command_block_side", 0, 10, 0);//interp
 		vmt("respawn_anchor_top", 0, 0, 0);
-		vmt("sculk", 10, 20, 0);//interp
+		vmt("sculk", 20, 5, 0);//interp
 		vmt("sculk_catalyst_side_bloom", 0, 1, 0);
 		vmt("sculk_catalyst_top_bloom", 0, 1, 0);
 		vmt("sculk_sensor_tendril_active", 0, 1, 1);
 		vmt("sculk_sensor_tendril_inactive", 0, 2, 1);
 		vmt("sculk_shrieker_can_summon_inner_top", 10, 3, 0);//interp
 		vmt("sculk_shrieker_inner_top", 10, 6, 0);//interp
-		vmt("sculk_vein", 10, 20, 1);
+		vmt("sculk_vein", 20, 5, 1);
 		vmt("seagrass", 0, 2, 1);
-		vmt("sea_lantern", 10, 5, 0);
+		vmt("sea_lantern", 10, 8, 0);
 		vmt("smoker_front_on", 0, 4, 0);
 		vmt("soul_campfire_fire", 0, 2, 1);
 		vmt("soul_campfire_log_lit", 0, 20, 1);//interp
@@ -61,9 +61,9 @@ public class AnimVMTProps extends QCFunctions {
 		vmt("stonecutter_saw", 0, 1, 1);
 		vmt("tall_seagrass_bottom", 0, 2, 1);
 		vmt("tall_seagrass_top", 0, 2, 1);
-		vmt("warped_stem", 0, 10, 0);//interp
-		vmt("water_flow", 0, 0, 0);//same?
-		vmt("water_still", 0, 2, 0);
+		vmt("warped_stem", 5, 4, 0);//interp
+		vmt("water_flow", 0, 6, 0);//same?
+		vmt("water_still", 0, 6, 0);
 		
 	}
 	

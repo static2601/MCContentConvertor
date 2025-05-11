@@ -415,6 +415,8 @@ public class TextureGetter {
 		guiStartRef.set_progress_label("Moving Animated VTFs to Textures Folder...", false, "");
 		System.out.println(dash+"Moving Animated VTFs to Textures Folder..."+dash);
 
+		// copy only the first frame without the suffix _0
+		// this will be default if no animations added later
 		File[] files = f.listFiles();
 		for(int i = 0; i < Objects.requireNonNull(f.listFiles()).length; i++) {
             assert files != null;
@@ -487,6 +489,9 @@ public class TextureGetter {
 		System.out.println("Making VMTs...Done!");
 	}
 
+	//TODO may want to be able to do all this outside of the script, in a json?
+	// or maybe somewhere everything can be. thinking long term with scalability
+	// and/or in GUI option
 	public static int CheckTranslucent(String vtf) {
 		if(vtf.contains("glass")) return 1;
 		if(vtf.contains("vine")) return 1;

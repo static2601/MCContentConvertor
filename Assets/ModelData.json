@@ -941,6 +941,20 @@
           "surfaceprop" : "foliage",
           "alphatest" : "1",
           "nocull" : "1"
+        }],
+        "kelp": [{
+          "nocull" : "1",
+          "alphatest" : "1",
+          "animatedTextureVar" : "$basetexture",
+          "animatedTextureFrameNumVar" : "$frame",
+          "animatedTextureFrameRate" : "8"
+        }],
+        "kelp_plant": [{
+          "nocull" : "1",
+          "alphatest" : "1",
+          "animatedTextureVar" : "$basetexture",
+          "animatedTextureFrameNumVar" : "$frame",
+          "animatedTextureFrameRate" : "8"
         }]
       }]
     }]
