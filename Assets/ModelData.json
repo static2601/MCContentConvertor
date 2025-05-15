@@ -593,6 +593,35 @@
         "surfaceprop": "Wood",
         "alphatest": "1",
         "nocull": "0"
+      }],
+      "perSkin": [{
+        "torch": [{
+          "surfaceprop": "Wood",
+          "alphatest": "1",
+          "nocull": "0",
+          "detail": "torch_mask",
+          "detailscale": "1",
+          "detailblendfactor": "1",
+          "detailblendmode": "5"
+        }],
+        "redstone_torch": [{
+          "surfaceprop": "Wood",
+          "alphatest": "1",
+          "nocull": "0",
+          "detail": "redstone_torch_mask",
+          "detailscale": "1",
+          "detailblendfactor": "1",
+          "detailblendmode": "5"
+        }],
+        "soul_torch": [{
+          "surfaceprop": "Wood",
+          "alphatest": "1",
+          "nocull": "0",
+          "detail": "soul_torch_mask",
+          "detailscale": "1",
+          "detailblendfactor": "1",
+          "detailblendmode": "5"
+        }]
       }]
     }]
   },
@@ -890,6 +919,26 @@
         "surfaceprop": "foliage",
         "alphatest": "1",
         "nocull": "1"
+      }],
+      "perSkin" : [{
+        "cave_vines_lit" : [{
+          "surfaceprop" : "foliage",
+          "alphatest" : "1",
+          "nocull" : "1",
+          "detail": "cave_vines_lit_mask",
+          "detailscale": "1",
+          "detailblendfactor": "1",
+          "detailblendmode": "5"
+        }],
+        "cave_vines_plant_lit" : [{
+          "surfaceprop" : "foliage",
+          "alphatest" : "1",
+          "nocull" : "1",
+          "detail": "cave_vines_plant_lit_mask",
+          "detailscale": "1",
+          "detailblendfactor": "1",
+          "detailblendmode": "5"
+        }]
       }]
     }]
   },
@@ -977,7 +1026,8 @@
       "skinsA": [
         "tall_grass_bottom","tall_grass_top","torchflower","torchflower_crop_stage0","torchflower_crop_stage1",
         "tube_coral","twisting_vines","twisting_vines_plant","warped_fungus","warped_roots","weeping_vines",
-        "weeping_vines_plant","white_tulip","wither_rose", "pale_oak_sapling", "pale_hanging_moss", "firefly_bush"
+        "weeping_vines_plant","white_tulip","wither_rose","pale_oak_sapling","pale_hanging_moss","firefly_bush",
+        "big_dripleaf_stem","cactus_flower","mangrove_propagule","bamboo_small_leaves", "bamboo_large_leaves"
       ]
     }],
     "skinProperties" : [{
@@ -1003,6 +1053,34 @@
     }]
   },
   {
+    "modelname": "Dripstone",
+    "type": "staticprop",
+    "body": "Dripstone",
+    "cdmaterials": "Dripstone",
+    "sequence": [{
+      "idle": "Dripstone"
+    }],
+    "surfaceprop": "rock",
+    "collisionmodel": "Dripstone",
+    "collisionOptions" : [
+      "$automass",
+      "$concave"
+    ],
+    "textureGroup": [{
+      "skinsA": [
+        "pointed_dripstone_down_base","pointed_dripstone_down_middle","pointed_dripstone_down_frustum", "pointed_dripstone_down_tip",
+        "pointed_dripstone_up_base","pointed_dripstone_up_middle","pointed_dripstone_up_frustum", "pointed_dripstone_up_tip"
+      ]
+    }],
+    "skinProperties" : [{
+      "skinA" : [{
+        "surfaceprop" : "rock",
+        "alphatest" : "1",
+        "nocull" : "1"
+      }]
+    }]
+  },
+  {
     "modelname": "CropModel1",
     "type": "staticprop",
     "body": "CropModel1",
@@ -1022,7 +1100,7 @@
         "carrots_stage1","carrots_stage2","carrots_stage3","nether_wart_stage0","nether_wart_stage1",
         "nether_wart_stage2","potatoes_stage0","potatoes_stage1","potatoes_stage2","potatoes_stage3",
         "wheat_stage0","wheat_stage1","wheat_stage2","wheat_stage3","wheat_stage4","wheat_stage5",
-        "wheat_stage6","wheat_stage7"
+        "wheat_stage6","wheat_stage7","seagrass","tall_seagrass_bottom", "tall_seagrass_top"
       ]
     }],
     "skinProperties": [{
@@ -1030,6 +1108,15 @@
         "surfaceprop": "foliage",
         "alphatest": "1",
         "nocull": "1"
+      }],
+      "perSkin": [{
+        "seagrass": [{
+          "nocull" : "1",
+          "alphatest" : "1",
+          "animatedTextureVar" : "$basetexture",
+          "animatedTextureFrameNumVar" : "$frame",
+          "animatedTextureFrameRate" : "8"
+        }]
       }]
     }]
   },
@@ -1194,16 +1281,29 @@
         "lantern", "soul_lantern"
       ]
     }],
-    "vtfLocation" : [{
-      "all" : "block/"
-    }],
     "skinProperties" : [{
-      "skinA" : [{
-        "nocull" : "1",
-        "alphatest" : "1",
-        "animatedTextureVar" : "$basetexture",
-        "animatedTextureFrameNumVar" : "$frame",
-        "animatedTextureFrameRate" : "3"
+      "perSkin": [{
+        "lantern": [{
+          "nocull" : "1",
+          "alphatest" : "1",
+          "detail": "lantern_mask",
+          "detailscale": "1",
+          "detailblendfactor": "1",
+          "detailblendmode": "5",
+          "animatedTextureVar" : "$basetexture",
+          "animatedTextureFrameNumVar" : "$frame",
+          "animatedTextureFrameRate" : "3"
+        }],
+        "soul_lantern": [{
+          "nocull" : "1",
+          "alphatest" : "1",
+          "detail": "soul_lantern_mask",
+          "detailscale": "1",
+          "detailblendfactor": "1",
+          "animatedTextureVar" : "$basetexture",
+          "animatedTextureFrameNumVar" : "$frame",
+          "animatedTextureFrameRate" : "30"
+        }]
       }]
     }]
   },
@@ -1227,12 +1327,29 @@
       ]
     }],
     "skinProperties" : [{
-      "skinA" : [{
-        "nocull" : "1",
-        "alphatest" : "1",
-        "animatedTextureVar" : "$basetexture",
-        "animatedTextureFrameNumVar" : "$frame",
-        "animatedTextureFrameRate" : "3"
+      "perSkin": [{
+        "lantern": [{
+          "nocull" : "1",
+          "alphatest" : "1",
+          "detail": "lantern_mask",
+          "detailscale": "1",
+          "detailblendfactor": "1",
+          "detailblendmode": "5",
+          "animatedTextureVar" : "$basetexture",
+          "animatedTextureFrameNumVar" : "$frame",
+          "animatedTextureFrameRate" : "3"
+        }],
+        "soul_lantern": [{
+          "nocull" : "1",
+          "alphatest" : "1",
+          "detail": "soul_lantern_mask",
+          "detailscale": "1",
+          "detailblendfactor": "1",
+          "detailblendmode": "5",
+          "animatedTextureVar" : "$basetexture",
+          "animatedTextureFrameNumVar" : "$frame",
+          "animatedTextureFrameRate" : "30"
+        }]
       }]
     }]
   },
@@ -1252,10 +1369,10 @@
     ],
     "textureGroup": [{
       "skinsA": [
-        "pink_petals"
+        "pink_petals", "wildflowers"
       ],
       "skinsB": [
-        "pink_petals_stem"
+        "pink_petals_stem", "wildflowers_stem"
       ]
     }],
     "skinProperties": [{
@@ -1287,10 +1404,10 @@
     ],
     "textureGroup": [{
       "skinsA": [
-        "pink_petals"
+        "pink_petals", "wildflowers"
       ],
       "skinsB": [
-        "pink_petals_stem"
+        "pink_petals_stem", "wildflowers_stem"
       ]
     }],
     "skinProperties": [{
@@ -1322,10 +1439,10 @@
     ],
     "textureGroup": [{
       "skinsA": [
-        "pink_petals"
+        "pink_petals", "wildflowers"
       ],
       "skinsB": [
-        "pink_petals_stem"
+        "pink_petals_stem", "wildflowers_stem"
       ]
     }],
     "skinProperties": [{
@@ -1357,10 +1474,10 @@
     ],
     "textureGroup": [{
       "skinsA": [
-        "pink_petals"
+        "pink_petals", "wildflowers"
       ],
       "skinsB": [
-        "pink_petals_stem"
+        "pink_petals_stem", "wildflowers_stem"
       ]
     }],
     "skinProperties": [{
@@ -1542,6 +1659,33 @@
     }]
   },
   {
+    "modelname": "HoneyBlock",
+    "type": "staticprop",
+    "body": "HoneyBlock",
+    "cdmaterials": "HoneyBlock",
+    "sequence": [{
+      "idle": "HoneyBlock"
+    }],
+    "surfaceprop": "Slipperyslime",
+    "collisionmodel": "HoneyBlock_collision",
+    "collisionOptions" : [
+      "$automass",
+      "$concave"
+    ],
+    "textureGroup": [{
+      "skinsA": [
+        "honey_block_bottom"
+      ]
+    }],
+    "skinProperties": [{
+      "skinA": [{
+        "surfaceprop": "Slime",
+        "nocull": "0",
+        "translucent": "1"
+      }]
+    }]
+  },
+  {
     "modelname": "SlimeBlock",
     "type": "staticprop",
     "body": "SlimeBlock",
@@ -1549,7 +1693,7 @@
     "sequence": [{
       "idle": "SlimeBlock"
     }],
-    "surfaceprop": "Slipperyslime",
+    "surfaceprop": "Rubbertire",
     "collisionmodel": "SlimeBlock",
     "collisionOptions" : [
       "$automass",
@@ -1562,9 +1706,9 @@
     }],
     "skinProperties": [{
       "skinA": [{
-        "surfaceprop": "Slime",
-        "nocull": "1",
-        "vertexalpha": "1"
+        "surfaceprop": "Rubbertire",
+        "nocull": "0",
+        "translucent": "1"
       }]
     }]
   },
@@ -1848,6 +1992,88 @@
       ],
       "skinsB": [
         "lever"
+      ]
+    }],
+    "skinProperties": [{
+      "skinA": [{
+        "surfaceprop": "none",
+        "nocull": "0"
+      }]
+    }]
+  },
+  {
+    "modelname": "leverHandle",
+    "type": "staticprop",
+    "body": "Lever_Handle",
+    "cdmaterials": "Lever",
+    "sequence": [{
+      "idle": "Lever_Handle"
+    }],
+    "surfaceprop": "none",
+    "collisionmodel": "Lever_Handle_collision",
+    "collisionOptions" : [
+      "$automass",
+      "$concave"
+    ],
+    "textureGroup": [{
+      "skinsA": [
+        "cobblestone"
+      ],
+      "skinsB": [
+        "lever"
+      ]
+    }],
+    "skinProperties": [{
+      "skinA": [{
+        "surfaceprop": "none",
+        "nocull": "0"
+      }]
+    }]
+  },
+  {
+    "modelname": "End_Rod",
+    "type": "staticprop",
+    "body": "End_Rod",
+    "cdmaterials": "End_Rod",
+    "sequence": [{
+      "idle": "End_Rod"
+    }],
+    "surfaceprop": "none",
+    "collisionmodel": "End_Rod_collision",
+    "collisionOptions" : [
+      "$automass",
+      "$concave"
+    ],
+    "textureGroup": [{
+      "skinsA": [
+        "end_rod"
+      ]
+    }],
+    "skinProperties": [{
+      "skinA": [{
+        "surfaceprop": "none",
+        "nocull": "0",
+        "selfillum": "1"
+      }]
+    }]
+  },
+  {
+    "modelname": "Lightning_Rod",
+    "type": "staticprop",
+    "body": "Lightning_Rod",
+    "cdmaterials": "Lightning_Rod",
+    "sequence": [{
+      "idle": "Lightning_Rod"
+    }],
+    "surfaceprop": "none",
+    "collisionmodel": "Lightning_Rod_collision",
+    "collisionOptions" : [
+      "$automass",
+      "$concave"
+    ],
+    "textureGroup": [{
+      "skinsA": [
+        "lightning_rod"
       ]
     }],
     "skinProperties": [{
