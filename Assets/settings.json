@@ -7,7 +7,7 @@
     "useUnits": true,
     "texturePacks": {},
     "scale": 1.0,
-    "units": 50,
+    "units": 48,
     "selectedTexturePack": "minecraft_original",
     "mcJarPath": "",
     "gameDir": ""
@@ -22,14 +22,14 @@
     },
     {
       "customColor": "",
-      "defaultColor": "#003600",
+      "defaultColor": "#004700",
       "uncolored": "",
       "textureName": "lily_pad",
       "transparent": true
     },
     {
       "customColor": "",
-      "defaultColor": "#003600",
+      "defaultColor": "#004700",
       "uncolored": "",
       "textureName": "vine",
       "transparent": true
@@ -85,21 +85,21 @@
     },
     {
       "customColor": "",
-      "defaultColor": "#003600",
+      "defaultColor": "#004700",
       "uncolored": "",
       "textureName": "short_grass",
       "transparent": true
     },
     {
       "customColor": "",
-      "defaultColor": "#003600",
+      "defaultColor": "#004700",
       "uncolored": "",
       "textureName": "tall_grass_bottom",
       "transparent": true
     },
     {
       "customColor": "",
-      "defaultColor": "#003600",
+      "defaultColor": "#004700",
       "uncolored": "",
       "textureName": "tall_grass_top",
       "transparent": true
@@ -113,21 +113,21 @@
     },
     {
       "customColor": "",
-      "defaultColor": "#003600",
+      "defaultColor": "#004700",
       "uncolored": "",
       "textureName": "large_fern_bottom",
       "transparent": true
     },
     {
       "customColor": "",
-      "defaultColor": "#003600",
+      "defaultColor": "#004700",
       "uncolored": "",
       "textureName": "large_fern_top",
       "transparent": true
     },
     {
       "customColor": "",
-      "defaultColor": "#003600",
+      "defaultColor": "#004700",
       "uncolored": "",
       "textureName": "fern",
       "transparent": true
@@ -162,14 +162,14 @@
     },
     {
       "customColor": "",
-      "defaultColor": "#3A44CC",
+      "defaultColor": "#001c64",
       "uncolored": "",
       "textureName": "water_still",
       "transparent": true
     },
     {
       "customColor": "",
-      "defaultColor": "#3A44CC",
+      "defaultColor": "#001c64",
       "uncolored": "",
       "textureName": "water_flow",
       "transparent": true
