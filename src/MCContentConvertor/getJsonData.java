@@ -21,7 +21,16 @@ public class getJsonData {
     public String sequence;
     public String surfaceprop;
     public String selfillum;
+    public String detail;
+    public String detailscale;
+    public String detailblendmode;
+    public String detailblendfactor;
     public String collisionModel;
+    public String nocull;
+    public String alphatest;
+    public String translucent;
+    public String color;
+    public ArrayList<perSkinProperties> perSkinPropsArr = new ArrayList<>();
 
     /** special location of vtf. block/ = "" (default, not necessary for json), entity = entity/, etc.
      * if not ended in /, will get by name, else directory */
@@ -202,17 +211,19 @@ public class getJsonData {
         return new ArrayList<>();
     }
 
-    public String nocull;
-    public String alphatest;
-    public String color;
-    public ArrayList<perSkinProperties> perSkinPropsArr = new ArrayList<>();
+
     public static class perSkinProperties {
         public String texture;
         public String nocull;
         public String alphatest;
+        public String translucent;
         public String color;
         public String surfaceprop;
         public String selfillum;
+        public String detail;
+        public String detailscale;
+        public String detailblendfactor;
+        public String detailblendmode;
         public String animatedTextureVar;
         public String animatedTextureFrameNumVar;
         public String animatedTextureFrameRate;
@@ -241,6 +252,9 @@ public class getJsonData {
                 if (jo_skinA.containsKey("alphatest")) {
                     this.alphatest = jo_skinA.get("alphatest").toString();
                 }
+                if (jo_skinA.containsKey("translucent")) {
+                    this.translucent = jo_skinA.get("translucent").toString();
+                }
                 if (jo_skinA.containsKey("color")) {
                     this.color = jo_skinA.get("color").toString();
                 }
@@ -249,6 +263,18 @@ public class getJsonData {
                 }
                 if (jo_skinA.containsKey("selfillum")) {
                     this.selfillum = jo_skinA.get("selfillum").toString();
+                }
+                if (jo_skinA.containsKey("detail")) {
+                    this.detail = jo_skinA.get("detail").toString();
+                }
+                if (jo_skinA.containsKey("detailscale")) {
+                    this.detailscale = jo_skinA.get("detailscale").toString();
+                }
+                if (jo_skinA.containsKey("detailblendfactor")) {
+                    this.detailblendfactor = jo_skinA.get("detailblendfactor").toString();
+                }
+                if (jo_skinA.containsKey("detailblendmode")) {
+                    this.detailblendmode = jo_skinA.get("detailblendmode").toString();
                 }
                 if (jo_skinA.containsKey("animatedTextureVar")) {
                     this.animatedTextureVar = jo_skinA.get("animatedTextureVar").toString();
@@ -280,6 +306,9 @@ public class getJsonData {
                     if (jo_textures.containsKey("alphatest")) {
                         perSkins.alphatest = jo_textures.get("alphatest").toString();
                     }
+                    if (jo_textures.containsKey("translucent")) {
+                        perSkins.translucent = jo_textures.get("translucent").toString();
+                    }
                     if (jo_textures.containsKey("color")) {
                         perSkins.color = jo_textures.get("color").toString();
                     }
@@ -288,6 +317,18 @@ public class getJsonData {
                     }
                     if (jo_textures.containsKey("selfillum")) {
                         perSkins.selfillum = jo_textures.get("selfillum").toString();
+                    }
+                    if (jo_textures.containsKey("detail")) {
+                        perSkins.detail = jo_textures.get("detail").toString();
+                    }
+                    if (jo_textures.containsKey("detailscale")) {
+                        perSkins.detailscale = jo_textures.get("detailscale").toString();
+                    }
+                    if (jo_textures.containsKey("detailblendfactor")) {
+                        perSkins.detailblendfactor = jo_textures.get("detailblendfactor").toString();
+                    }
+                    if (jo_textures.containsKey("detailblendmode")) {
+                        perSkins.detailblendmode = jo_textures.get("detailblendmode").toString();
                     }
                     if (jo_textures.containsKey("animatedTextureVar")) {
                         perSkins.animatedTextureVar = jo_textures.get("animatedTextureVar").toString();
