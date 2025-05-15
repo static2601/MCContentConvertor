@@ -39,7 +39,9 @@ public interface Pathnames {
 
 	String ANIMTEXTEXTURES = USERDIR + "/Assets/Textures/Anims";
 
+	String MASKS = USERDIR + "/Assets/Textures/Masks";
+
 	String BATDIR = TEMPTEXTURES;
 
-	boolean DEBUG = false;
+	boolean DEBUG = true;
 }
