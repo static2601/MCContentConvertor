@@ -481,6 +481,7 @@ public class TextureGetter {
 				+ setAlpha
 				+ setColor(n)
 				+ setOtherProps(n)
+				+ makeLiquid(n)
 				+ "}";
 
 			WriteFile(vmt, path+"\\", n+".vmt");
@@ -563,9 +564,17 @@ public class TextureGetter {
 		if (vtf.equals("glowstone")) return propValue("selfillum", "1");
 		if (vtf.contains("lava")) return propValue("selfillum", "1");
 		if (vtf.equals("redstone_lamp_on")) return propValue("selfillum", "1");
+		if (vtf.contains("_froglight_")) return propValue("selfillum", "1");
+		if (vtf.equals("shroomlight")) return propValue("selfillum", "1");
+		if (vtf.equals("magma_block")) return propValue("selfillum", "1");
+
+		return "";
+	}
+	public static String makeLiquid(String vtf) {
 		if (vtf.equals("water_still")) return MakeWater();
 		if (vtf.equals("water_flow")) return MakeWater();
-
+		if (vtf.equals("lava_still")) return MakeLava();
+		if (vtf.equals("lava_flow")) return MakeLava();
 		return "";
 	}
 
@@ -588,10 +597,24 @@ public class TextureGetter {
 				"\t\"%compilewater\" 1 // to compile as water\n" +
 				"\t\"$surfaceprop\" \"water\" //for physics\n" +
 				"\t\"$fogenable\" 1 // set to 0 for no fog\n" +
-				"\t\"$fogcolor\" \"[.20 .10 .60]\" // RGB setting for color of the fog. 0 is white 1 is black.\n" +
+				"\t\"$fogcolor\" \"[0.0 0.1 0.9]\" // RGB setting for color of the fog. 0 is white 1 is black.\n" +
 				"\t\"$fogstart\" 0 // keep this a 0 or the fog will not look right\n" +
 				"\t\"$fogend\" 500 //larger the # the farther the fog will start from the player.\n" +
 				"\t\"$bottommaterial\" \"minecraft_original/water_still\" //see below for waterunder.vmt\n" +
+				" ";
+		return body;
+	}
+	private static String MakeLava() {
+		String body =
+				"\t\"$translucent\" 1\n" +
+				"\t\"$abovewater\" 1   //This is what tell the water to be on top.\n" +
+				"\t\"%compilewater\" 1 // to compile as water\n" +
+				"\t\"$surfaceprop\" \"water\" //for physics\n" +
+				"\t\"$fogenable\" 1 // set to 0 for no fog\n" +
+				"\t\"$fogcolor\" \"[1.0 0.30 0.0]\" // RGB setting for color of the fog. 0 is white 1 is black.\n" +
+				"\t\"$fogstart\" 0 // keep this a 0 or the fog will not look right\n" +
+				"\t\"$fogend\" 50 //larger the # the farther the fog will start from the player.\n" +
+				"\t\"$bottommaterial\" \"minecraft_original/lava_still\" //see below for waterunder.vmt\n" +
 				" ";
 		return body;
 	}
@@ -648,6 +671,7 @@ public class TextureGetter {
 					+ "	\"$basetexture\" \""+ matdir +""+ n +"\"\n"
 					+ "	\"$alphatest\" "+at+"\n"
 					+ setOtherProps(n)
+					+ makeLiquid(n)
 					+ "\n"
 					+ "\tProxies\n"
 					+ "\t{\n"
@@ -695,7 +719,7 @@ public class TextureGetter {
 		//img1 = arr[1], img2 = arr[2] etc until length -1 is reached
 
 		// your directory
-		boolean framesArr = false;
+		boolean framesArr = true;
 		String outputfile = Generated+"\\";
 		
 		File f = new File(outputfile);
@@ -716,18 +740,20 @@ public class TextureGetter {
 		        return name.startsWith(fn) && name.endsWith("png") && name.length() == nameLength;
 		    }
 		});
-		
-		if(framesArr) {
-			
-			ArrayList<String> arrS = new ArrayList<String>();
-			//sort by pattern (numbers)
-			arrS = sortNumbers(matchingFiles, numbers);
-			
-			for(int v = 0; v < matchingFiles.length; v++) {
-				
-				matchingFiles[v] = new File(arrS.get(v));
+
+		int[] iFrames = AnimVMTProps.animVMTFramesData.get(fn);
+		System.out.println("iFrames.length for name: " + iFrames.length + ", "+ fn);
+		if (iFrames.length > 0) {
+
+			ArrayList<File> arrS = new ArrayList<>();
+			//create frames by frame order
+			arrS = sortNumbers2(matchingFiles, iFrames);
+			matchingFiles = new File[arrS.size()];
+
+			for(int v = 0; v < arrS.size(); v++) {
+				matchingFiles[v] = arrS.get(v);
 			}
-			
+
 		} else {
 		
 			//sort files by from zero
@@ -970,7 +996,7 @@ public class TextureGetter {
         //}
     }//16-31, 0-15
 
-    private static int[] numbers = {16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28,
+    private static int[] numbers1 = {16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28,
     		29, 30, 31, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
     public static ArrayList<String> sortNumbers(File[] sourceFiles, int[] numbers){
     	
@@ -992,6 +1018,26 @@ public class TextureGetter {
     	return arr;
     	
     }
+	public static ArrayList<File> sortNumbers2(File[] sourceFiles, int[] numbers){
+
+		ArrayList<File> arr = new ArrayList<>();
+
+		for(int i : numbers) {
+
+			for(File f : sourceFiles) {
+
+				int num = extractNumber(f.toString());
+
+				if(i == num) {
+					arr.add(new File(f.toString()));
+					//System.out.println(f.toString()+"<-----------------"+num);
+				}
+			}
+		}
+
+		return arr;
+
+	}
 
     private static int extractNumber(String name) {
         
