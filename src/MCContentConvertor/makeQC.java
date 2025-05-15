@@ -16,10 +16,12 @@ public class makeQC {
     private final String modelPath = modelsDir + "_"+ mdlUnits +"/";
     private final String VTFSMATDIR = GAMEDIR + "/materials/"+ TEXTUREPACK +"/";
 
+    /// materials path starting at TEXTUREPACK
     public String materialsPath = TEXTUREPACK + "/minecraft_prop_materials/";
     public String modelName;
     public String type;
     public String body;
+    /// materials folder as listed in QC
     public String cdMaterials;
     public String[] sequence;
     public String surfaceProp;
@@ -29,9 +31,14 @@ public class makeQC {
 
     public String nocull;
     public String alphatest;
+    public String translucent;
     public String color;
     public String surfaceprop;
     public String selfillum;
+    public String detail;
+    public String detailscale;
+    public String detailblendmode;
+    public String detailblendfactor;
     public String animatedTextureVar;
     public String animatedTextureFrameNumVar;
     public String animatedTextureFrameRate;
@@ -60,9 +67,16 @@ public class makeQC {
 
         this.nocull = data.nocull;
         this.alphatest = data.alphatest;
+        this.translucent = data.translucent;
         this.color = data.color;
         this.surfaceprop = data.surfaceprop;
         this.selfillum = data.selfillum;
+
+        this.detail = data.detail;
+        this.detailscale = data.detailscale;
+        this.detailblendmode = data.detailblendmode;
+        this.detailblendfactor = data.detailblendfactor;
+
         this.animatedTextureVar = data.animatedTextureVar;
         this.animatedTextureFrameNumVar = data.animatedTextureFrameNumVar;
         this.animatedTextureFrameRate = data.animatedTextureFrameRate;
@@ -125,8 +139,9 @@ public class makeQC {
             sb.append("\t\"").append("$basetexture").append("\" \"").append(this.materialsPath)
                     .append(this.cdMaterials).append("/").append(skin).append("\"\n");
 
-            if(!checkForPerSkins2(skin).isEmpty())
-                sb.append(checkForPerSkins2(skin));
+            String skins2 = checkForPerSkins2(skin);
+            if(!skins2.isEmpty())
+                sb.append(skins2);
             else sb.append(checkForSkinProps(skin));
             
             if(skin.contains("redstone_dust_line"))
@@ -148,8 +163,9 @@ public class makeQC {
                 sb.append("\t\"").append("$basetexture").append("\" \"").append(this.materialsPath)
                         .append(this.cdMaterials).append("/").append(skin).append("\"\n");
 
-                if (!checkForPerSkins2(skin).isEmpty())
-                    sb.append(checkForPerSkins2(skin));
+                String skins2 = checkForPerSkins2(skin);
+                if (!skins2.isEmpty())
+                    sb.append(skins2);
                 else sb.append(checkForSkinProps(skin));
 
                 sb.append("}").append("\n");
@@ -178,14 +194,38 @@ public class makeQC {
             return "\t\"$color2\" \"{"+color[0]+" "+color[1]+" "+ color[2] +"}\" \n";
     }
 
-    public String checkForSkinProps(String skin) {
+    public String checkForSkinProps(String skin) throws IOException {
         StringBuilder sb = new StringBuilder("");
 
         if(this.nocull != null) sb.append("\t\"").append("$nocull\" \"").append(this.nocull).append("\"\n");
         if(this.alphatest != null) sb.append("\t\"").append("$alphatest\" \"").append(this.alphatest).append("\"\n");
+        if(this.translucent != null) sb.append("\t\"").append("$translucent\" \"").append(this.translucent).append("\"\n");
         if(this.color != null) sb.append("\t\"").append("$color\" \"").append(this.color).append("\"\n");
         if(this.surfaceprop != null) sb.append("\t\"").append("$surfaceprop\" \"").append(this.surfaceprop).append("\"\n");
         if(this.selfillum != null) sb.append("\t\"").append("$selfillum\" \"").append(this.selfillum).append("\"\n");
+
+        // check for any detail masks to apply
+        if(this.detail != null) {
+            String pathToMask = this.materialsPath + this.cdMaterials;
+
+            // copy from Assets/Texture/Masks _mask to model's texture folder
+            File copy_a = new File(MASKS+FS+TEXTUREPACK+FS+this.detail+".vtf");
+            File copy_b = new File(GAMEDIR+"/materials/"+pathToMask+FS+this.detail+".vtf");
+
+            if(!TextureGetter.copyFile(copy_a, copy_b)) {
+                System.err.println("Could not copy Mask from: "+ copy_a + " to "+ copy_b);
+
+            } else {
+
+                System.out.println("[checkForSkinProps] Mask copied from: "+ copy_a + " to "+ copy_b);
+                // write properties to vmt
+
+                sb.append("\t\"").append("$detail\" \"").append(pathToMask+FS+this.detail).append("\"\n");
+                if(this.detailscale != null) sb.append("\t\"").append("$detailscale\" \"").append(this.detailscale).append("\"\n");
+                if(this.detailblendmode != null) sb.append("\t\"").append("$detailblendmode\" \"").append(this.detailblendmode).append("\"\n");
+                if(this.detailblendfactor != null) sb.append("\t\"").append("$detailblendfactor\" \"").append(this.detailblendfactor).append("\"\n");
+            }
+        }
 
         if(this.animatedTextureVar != null) {
             sb.append("\t").append("Proxies").append("\n");
@@ -206,7 +246,7 @@ public class makeQC {
         return sb.toString();
     }
 
-    public String checkForPerSkins2(String skin) {
+    public String checkForPerSkins2(String skin) throws IOException {
         StringBuilder sb = new StringBuilder();
         for(int x = 0; x < this.perSkinProperties2.size(); x++) {
             String skinz = this.perSkinProperties2.get(x).texture;
@@ -215,9 +255,32 @@ public class makeQC {
             if(skinz.equals(skin)) {
                 if(prop.nocull != null) sb.append("\t").append("\"$nocull\" \"").append(prop.nocull).append("\"\n");
                 if(prop.alphatest != null) sb.append("\t").append("\"$alphatest\" \"").append(prop.alphatest).append("\"\n");
+                if(prop.translucent != null) sb.append("\t").append("\"$translucent\" \"").append(prop.translucent).append("\"\n");
                 if(prop.color != null) sb.append("\t").append("\"$color\" \"").append(prop.color).append("\"\n");
                 if(prop.surfaceprop != null) sb.append("\t").append("\"$surfaceprop\" \"").append(prop.surfaceprop).append("\"\n");
                 if(prop.selfillum != null) sb.append("\t\"").append("$selfillum\" \"").append(prop.selfillum).append("\"\n");
+
+                // check for any detail masks to apply
+                if(prop.detail != null) {
+                    String pathToMask = this.materialsPath + this.cdMaterials;
+
+                    // copy from Assets/Texture/Masks _mask to model's texture folder
+                    File copy_a = new File(MASKS+FS+TEXTUREPACK+FS+prop.detail+".vtf");
+                    File copy_b = new File(GAMEDIR+"/materials/"+pathToMask+FS+prop.detail+".vtf");
+
+                    if(!TextureGetter.copyFile(copy_a, copy_b)) {
+                        System.err.println("Could not copy Mask from: "+ copy_a + " to "+ copy_b);
+
+                    } else {
+
+                        System.out.println("[checkForPerSkins2] Mask copied from: "+ copy_a + " to "+ copy_b);
+                        // write properties to vmt
+                        sb.append("\t\"").append("$detail\" \"").append(pathToMask+FS+prop.detail).append("\"\n");
+                        if(prop.detailscale != null) sb.append("\t\"").append("$detailscale\" \"").append(prop.detailscale).append("\"\n");
+                        if(prop.detailblendmode != null) sb.append("\t\"").append("$detailblendmode\" \"").append(prop.detailblendmode).append("\"\n");
+                        if(prop.detailblendfactor != null) sb.append("\t\"").append("$detailblendfactor\" \"").append(prop.detailblendfactor).append("\"\n");
+                    }
+                }
 
                 if(prop.animatedTextureVar != null) {
                     sb.append("\t").append("Proxies").append("\n");
@@ -390,14 +453,36 @@ public class makeQC {
             System.out.println("File successfully copied!");
         else System.out.println("File failed to copy!");
 
-        // check if anim has the same vtf and copy over it
+        // copy over any vtf of filename, if exists
         String filename = from.getName();
         from = new File(ANIMTEXTEXTURES + FS + TEXTUREPACK + FS + filename);
-        System.out.println("Anim from: "+ from);
-        System.out.println("Anim to: "+ to);
+        System.out.println("Anim VTF from: "+ from);
+        System.out.println("Anim VTF to: "+ to);
         if (TextureGetter.copyFile(from, to))
             System.out.println("File successfully copied!");
         else System.out.println("No file copied.");
+
+        //TODO should this be taken out???
+        // vtf file signature getting invalidated somehow,
+        // cant open vtf file and missing in editor/game
+        // copy over any vmt of filename, if exists
+        // probably should have json with animation properties
+        // set along with other properties that could be added to it
+        // custom vmts but detailed in json
+        // only necessary if copying vmt is causing corruption on vtf file
+
+        // first of all, this was writing a vmt to a vtf
+        // probably why the signature errors,
+        // then, if your trying to make new properties in the vmt,
+        // you shouldn't be copying over the new one with an old one
+
+//        filename = filename.replace(".vtf", ".vmt");
+//        from = new File(ANIMTEXTEXTURES + FS + TEXTUREPACK + FS + filename);
+//        System.out.println("Anim VMT from: "+ from);
+//        System.out.println("Anim VMT to: "+ to);
+//        if (TextureGetter.copyFile(from, to))
+//            System.out.println("File successfully copied!");
+//        else System.out.println("No file copied.");
 
         try {
             File theDir = new File(ModelMatPath);
