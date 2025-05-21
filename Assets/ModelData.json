@@ -894,13 +894,13 @@
   {
     "modelname": "CrossModel1",
     "type": "staticprop",
-    "body": "CrossModel1",
+    "body": "CrossModel1a",
     "cdmaterials": "CrossModel",
     "sequence": [{
-      "idle": "CrossModel1"
+      "idle": "CrossModel1a"
     }],
     "surfaceprop": "foliage",
-    "collisionmodel": "CrossModel1",
+    "collisionmodel": "CrossModel1a",
     "collisionOptions" : [
       "$automass",
       "$concave"
@@ -918,13 +918,13 @@
       "skinA": [{
         "surfaceprop": "foliage",
         "alphatest": "1",
-        "nocull": "1"
+        "nocull": "0"
       }],
       "perSkin" : [{
         "cave_vines_lit" : [{
           "surfaceprop" : "foliage",
           "alphatest" : "1",
-          "nocull" : "1",
+          "nocull" : "0",
           "detail": "cave_vines_lit_mask",
           "detailscale": "1",
           "detailblendfactor": "1",
@@ -933,7 +933,7 @@
         "cave_vines_plant_lit" : [{
           "surfaceprop" : "foliage",
           "alphatest" : "1",
-          "nocull" : "1",
+          "nocull" : "0",
           "detail": "cave_vines_plant_lit_mask",
           "detailscale": "1",
           "detailblendfactor": "1",
@@ -945,13 +945,13 @@
   {
     "modelname": "CrossModel2",
     "type": "staticprop",
-    "body": "CrossModel2",
+    "body": "CrossModel2a",
     "cdmaterials": "CrossModel",
     "sequence": [{
-      "idle": "CrossModel2"
+      "idle": "CrossModel2a"
     }],
     "surfaceprop": "foliage",
-    "collisionmodel": "CrossModel2",
+    "collisionmodel": "CrossModel2a",
     "collisionOptions" : [
       "$automass",
       "$concave"
@@ -970,36 +970,36 @@
       "skinA" : [{
         "surfaceprop": "foliage",
         "alphatest": "1",
-        "nocull": "1"
+        "nocull": "0"
       }],
       "perSkin" : [{
         "large_fern_bottom" : [{
           "color" : "[0.55 0.76 0.0]",
           "surfaceprop" : "foliage",
           "alphatest" : "1",
-          "nocull" : "1"
+          "nocull" : "0"
         }],
         "large_fern_top" : [{
           "color" : "[0.55 0.76 0.0]",
           "surfaceprop" : "foliage",
           "alphatest" : "1",
-          "nocull" : "1"
+          "nocull" : "0"
         }],
         "short_grass" : [{
           "color" : "[0.55 0.76 0.0]",
           "surfaceprop" : "foliage",
           "alphatest" : "1",
-          "nocull" : "1"
+          "nocull" : "0"
         }],
         "kelp": [{
-          "nocull" : "1",
+          "nocull" : "0",
           "alphatest" : "1",
           "animatedTextureVar" : "$basetexture",
           "animatedTextureFrameNumVar" : "$frame",
           "animatedTextureFrameRate" : "8"
         }],
         "kelp_plant": [{
-          "nocull" : "1",
+          "nocull" : "0",
           "alphatest" : "1",
           "animatedTextureVar" : "$basetexture",
           "animatedTextureFrameNumVar" : "$frame",
@@ -1011,13 +1011,13 @@
   {
     "modelname": "CrossModel3",
     "type": "staticprop",
-    "body": "CrossModel3",
+    "body": "CrossModel3a",
     "cdmaterials": "CrossModel",
     "sequence": [{
-      "idle": "CrossModel3"
+      "idle": "CrossModel3a"
     }],
     "surfaceprop": "foliage",
-    "collisionmodel": "CrossModel3",
+    "collisionmodel": "CrossModel3a",
     "collisionOptions" : [
       "$automass",
       "$concave"
@@ -1034,20 +1034,20 @@
       "skinA" : [{
         "surfaceprop" : "foliage",
         "alphatest" : "1",
-        "nocull" : "1"
+        "nocull" : "0"
       }],
       "perSkin" : [{
         "tall_grass_bottom" : [{
           "color" : "[0.55 0.76 0.0]",
           "surfaceprop" : "foliage",
           "alphatest" : "1",
-          "nocull" : "1"
+          "nocull" : "0"
         }],
         "tall_grass_top" : [{
           "color" : "[0.55 0.76 0.0]",
           "surfaceprop" : "foliage",
           "alphatest" : "1",
-          "nocull" : "1"
+          "nocull" : "0"
         }]
       }]
     }]
