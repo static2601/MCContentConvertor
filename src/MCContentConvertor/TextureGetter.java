@@ -565,8 +565,9 @@ public class TextureGetter {
 		if (vtf.contains("lava")) return propValue("selfillum", "1");
 		if (vtf.equals("redstone_lamp_on")) return propValue("selfillum", "1");
 		if (vtf.contains("_froglight_")) return propValue("selfillum", "1");
+		if (vtf.equals("sea_lantern")) return propValue("selfillum", "1");
 		if (vtf.equals("shroomlight")) return propValue("selfillum", "1");
-		if (vtf.equals("magma_block")) return propValue("selfillum", "1");
+		if (vtf.equals("magma")) return propValue("selfillum", "1");
 
 		return "";
 	}
